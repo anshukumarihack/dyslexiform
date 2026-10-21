@@ -1,0 +1,78 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alex Johnson",
+      "email": "alex@dyslexiform.org",
+      "passwordHash": "cGFzc3dvcmQxMjM=",
+      "role": "student",
+      "createdAt": "2026-10-21T11:20:46.091Z"
+    }
+  ],
+  "presets": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Gentle Flow (Default)",
+      "fontFamily": "Lexend",
+      "fontSize": 105,
+      "lineHeight": 1.75,
+      "letterSpacing": 0.04,
+      "wordSpacing": 0.12,
+      "bionicMode": false,
+      "readingRuler": false,
+      "pageTint": "cream",
+      "isDefault": true
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "name": "Deep Focus & Baselines",
+      "fontFamily": "OpenDyslexic",
+      "fontSize": 110,
+      "lineHeight": 1.9,
+      "letterSpacing": 0.06,
+      "wordSpacing": 0.16,
+      "bionicMode": false,
+      "readingRuler": true,
+      "pageTint": "none",
+      "isDefault": false
+    }
+  ],
+  "reading_logs": [
+    {
+      "id": 1,
+      "userId": 1,
+      "wpm": 154,
+      "durationMinutes": 15,
+      "articleTitle": "Baseline Trial",
+      "date": "2026-10-21T11:20:46.093Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "wpm": 182,
+      "durationMinutes": 20,
+      "articleTitle": "Cognitive Science Article",
+      "date": "2026-10-21T11:20:46.093Z"
+    }
+  ],
+  "cohorts": [
+    {
+      "id": 1,
+      "name": "Grade 6 — Blue Cohort",
+      "studentCount": 24,
+      "activePreset": "Gentle Flow (Lexend)",
+      "lastUpdated": "2026-10-21T11:20:46.093Z"
+    },
+    {
+      "id": 2,
+      "name": "Grade 8 — Green Cohort",
+      "studentCount": 18,
+      "activePreset": "Deep Focus (OpenDyslexic)",
+      "lastUpdated": "2026-10-21T11:20:46.093Z"
+    }
+  ],
+  "contact_messages": [],
+  "barrier_reports": []
+}

@@ -87,7 +87,6 @@ dyslexiform/
 │   ├── #product                  # Deep technical engine breakdowns + live mini-tuner
 │   ├── #resources                # 3-step typographic diagnostic & scientific papers
 │   ├── #blog                     # Research journal with category filter & reader modal
-│   ├── #company                  # The 4-Pillar Manifesto & Team profiles
 │   ├── #accessibility            # WCAG 2.2 AAA criteria compliance matrix
 │   ├── #privacy                  # Plain-English zero-telemetry guarantee
 │   ├── #dashboard                # Student reading metrics & Chart.js velocity graphs

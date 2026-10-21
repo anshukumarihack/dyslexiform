@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DyslexiForm Controls</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo">D</div>
+        <div class="brand-info">
+          <h1>DyslexiForm</h1>
+          <span class="version-tag">v2.1.4</span>
+        </div>
+      </div>
+      <!-- Master Switch -->
+      <label class="switch" title="Enable or Disable DyslexiForm on this page">
+        <input type="checkbox" id="masterToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <div class="content-body" id="mainControls">
+      <!-- Font Choice -->
+      <section class="control-group">
+        <label class="group-title">Typeface</label>
+        <div class="font-selector">
+          <button class="font-btn active" data-font="Lexend" style="font-family:'Lexend',sans-serif">Lexend</button>
+          <button class="font-btn" data-font="OpenDyslexic" style="font-family:'OpenDyslexic',cursive,sans-serif">OpenDyslexic</button>
+          <button class="font-btn" data-font="Atkinson Hyperlegible" style="font-family:'Atkinson Hyperlegible',sans-serif">Atkinson</button>
+          <button class="font-btn" data-font="Comic Sans MS" style="font-family:'Comic Sans MS',cursive">Comic Sans</button>
+        </div>
+      </section>
+
+      <!-- Sliders -->
+      <section class="control-group sliders">
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>Size</span>
+            <span class="slider-val" id="val-fontSize">105%</span>
+          </div>
+          <input type="range" id="input-fontSize" min="80" max="160" step="5" value="105">
+        </div>
+
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>Line Height</span>
+            <span class="slider-val" id="val-lineHeight">1.75</span>
+          </div>
+          <input type="range" id="input-lineHeight" min="1.2" max="2.6" step="0.05" value="1.75">
+        </div>
+
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>Letter Spacing</span>
+            <span class="slider-val" id="val-letterSpacing">0.04em</span>
+          </div>
+          <input type="range" id="input-letterSpacing" min="0" max="0.20" step="0.01" value="0.04">
+        </div>
+
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>Word Spacing</span>
+            <span class="slider-val" id="val-wordSpacing">0.12em</span>
+          </div>
+          <input type="range" id="input-wordSpacing" min="0" max="0.35" step="0.02" value="0.12">
+        </div>
+      </section>
+
+      <!-- Advanced Features -->
+      <section class="control-group">
+        <label class="group-title">Focus & Reading Tools</label>
+        
+        <div class="toggle-row">
+          <div class="toggle-text">
+            <strong>Bionic Reading</strong>
+            <span>Bold initial syllable fixations</span>
+          </div>
+          <label class="mini-switch">
+            <input type="checkbox" id="toggle-bionic">
+            <span class="mini-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-text">
+            <strong>Focus Reading Ruler</strong>
+            <span>Mouse-guided horizon bar</span>
+          </div>
+          <label class="mini-switch">
+            <input type="checkbox" id="toggle-ruler">
+            <span class="mini-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-text">
+            <strong>Contrast Weight Boost</strong>
+            <span>Prevents light hairline letters</span>
+          </div>
+          <label class="mini-switch">
+            <input type="checkbox" id="toggle-weight">
+            <span class="mini-slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Page Tint Overlay -->
+      <section class="control-group">
+        <label class="group-title">Visual Comfort Tint</label>
+        <div class="tint-swatches">
+          <button class="tint-btn active" data-tint="none" title="No Tint (Default)">None</button>
+          <button class="tint-btn" data-tint="cream" style="background:#fff6e6" title="Warm Cream"></button>
+          <button class="tint-btn" data-tint="peach" style="background:#ffedde" title="Soft Peach"></button>
+          <button class="tint-btn" data-tint="mint" style="background:#e4f7ec" title="Calm Mint"></button>
+          <button class="tint-btn" data-tint="rose" style="background:#fce8ee" title="Muted Rose"></button>
+          <button class="tint-btn" data-tint="dark" style="background:#222;color:#fff" title="Inverted Dark"></button>
+        </div>
+      </section>
+
+      <!-- Quick Presets -->
+      <section class="control-group">
+        <label class="group-title">Quick Presets</label>
+        <div class="presets-grid">
+          <button class="preset-btn" id="preset-gentle">Gentle</button>
+          <button class="preset-btn" id="preset-focus">Deep Focus</button>
+          <button class="preset-btn" id="preset-speed">Bionic Flow</button>
+          <button class="preset-btn" id="preset-reset">Reset</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <a href="http://localhost:8080/index.html#dashboard" target="_blank" class="dashboard-link">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+        </svg>
+        Open DyslexiForm Hub
+      </a>
+      <span class="active-badge" id="statusBadge">Active</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

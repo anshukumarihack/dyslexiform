@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en" data-dyslexiform-active="true" data-dyslexiform-font="Lexend">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DyslexiForm — Live Extension Simulation & Test Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Link directly to the extension's content.css and popup.css -->
+  <link rel="stylesheet" href="extension/content.css">
+  <link rel="stylesheet" href="extension/popup.css">
+
+  <style>
+    :root {
+      --bg-page: #f8f9fa;
+      --text-main: #202124;
+      --border-color: #dadce0;
+      --header-bg: #ffffff;
+      --browser-bar-bg: #eef2f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Simulated Chrome Browser Chrome / Top Bar */
+    .simulated-browser-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--browser-bar-bg);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .tab-strip {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px 0;
+      gap: 8px;
+    }
+
+    .browser-tab {
+      background: #fff;
+      padding: 8px 18px;
+      border-radius: 8px 8px 0 0;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-color);
+      border-bottom: none;
+      box-shadow: 0 -1px 3px rgba(0,0,0,0.02);
+    }
+
+    .browser-toolbar {
+      background: #ffffff;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-icons {
+      display: flex;
+      gap: 8px;
+      color: #5f6368;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+    .nav-btn:hover { background: #f1f3f4; }
+
+    .address-bar {
+      flex: 1;
+      background: #f1f3f4;
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: #3c4043;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: monospace;
+    }
+
+    .extension-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Extension Toolbar Trigger Button */
+    .ext-trigger-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a6b5a;
+      color: #ffffff;
+      border: 2px solid #e8943a;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      box-shadow: 0 2px 6px rgba(26,107,90,0.3);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .ext-trigger-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(26,107,90,0.4);
+      background: #14584a;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #e8943a;
+      border-radius: 50%;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 148, 58, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(232, 148, 58, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(232, 148, 58, 0); }
+    }
+
+    /* Floating Extension Popup Container */
+    .floating-popup-wrapper {
+      position: fixed;
+      top: 60px;
+      right: 24px;
+      z-index: 2000;
+      width: 350px;
+      background: #faf7f2;
+      border-radius: 12px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.08);
+      border: 2px solid #1a6b5a;
+      overflow: hidden;
+      animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Main Article Container */
+    .article-container {
+      max-width: 860px;
+      margin: 40px auto 100px;
+      padding: 0 24px;
+    }
+
+    .article-header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .article-tag {
+      display: inline-block;
+      background: #e8f4f0;
+      color: #1a6b5a;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .article-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      color: #1a202c;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: #718096;
+      display: flex;
+      gap: 16px;
+    }
+
+    .article-body p {
+      margin-bottom: var(--df-paragraph-spacing, 1.4em);
+      font-size: 1.15rem;
+      line-height: var(--df-line-height, 1.75);
+      letter-spacing: var(--df-letter-spacing, 0.04em);
+      word-spacing: var(--df-word-spacing, 0.12em);
+    }
+
+    .article-callout {
+      background: #edf8f5;
+      border-left: 4px solid #1a6b5a;
+      padding: 20px 24px;
+      border-radius: 0 8px 8px 0;
+      margin: 28px 0;
+    }
+
+    .article-callout h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a6b5a;
+      margin-bottom: 8px;
+    }
+
+    .article-callout p {
+      font-size: 1.05rem;
+      margin-bottom: 0;
+    }
+
+    /* Notification banner */
+    .top-banner {
+      background: #1a6b5a;
+      color: #fff;
+      padding: 8px 16px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-banner a {
+      color: #e8943a;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+  
+    /* Simulator Toast notification */
+    #demo-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1a6b5a;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      border: 2px solid #e8943a;
+      z-index: 999999;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #demo-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+</style>
+</head>
+<body>
+
+  <!-- Top Announcement -->
+  <div class="top-banner">
+    <div>
+      🧪 <strong>Live Extension Simulation:</strong> Use the floating DyslexiForm widget on the right to test how real webpages transform!
+    </div>
+    <div>
+      <a href="index.html#home">← Back to Marketing Site</a>
+    </div>
+  </div>
+
+  <!-- Simulated Browser Chrome -->
+  <div class="simulated-browser-bar">
+    <div class="tab-strip">
+      <div class="browser-tab">
+        <span>📖</span>
+        <span>The Neuroscience of Visual Typography — Science Daily</span>
+        <span style="color:#999;cursor:pointer;">×</span>
+      </div>
+    </div>
+    <div class="browser-toolbar">
+      <div class="nav-icons">
+        <button class="nav-btn" title="Back">←</button>
+        <button class="nav-btn" title="Forward">→</button>
+        <button class="nav-btn" title="Reload">⟳</button>
+      </div>
+      <div class="address-bar">
+        <span>🔒</span>
+        <span>https://sciencedaily.org/neuroscience-and-reading-accessibility/</span>
+      </div>
+      <div class="extension-icons">
+        <button class="ext-trigger-btn" id="extTriggerBtn" title="Toggle DyslexiForm Extension Popup">
+          <div class="pulse-dot" id="extPulseDot"></div>
+          <span>DyslexiForm Extension</span>
+          <span id="extTriggerBadge" style="font-size:10px;background:#e8943a;padding:2px 6px;border-radius:10px;color:#fff;font-weight:700;">ON</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING EXTENSION POPUP (Mirroring exact extension/popup.html code) -->
+  <div class="floating-popup-wrapper" id="floatingPopup">
+    <div class="popup-container">
+      <!-- Header (Draggable) -->
+      <header class="header" title="Drag to move this window anywhere on screen">
+        <div class="brand">
+          <div class="brand-logo">D</div>
+          <div class="brand-info">
+            <h1>DyslexiForm</h1>
+            <span class="version-tag">v2.1.4 · Drag to move ↔</span>
+          </div>
+        </div>
+        <!-- Master Switch -->
+        <label class="switch" title="Enable or Disable DyslexiForm">
+          <input type="checkbox" id="masterToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </header>
+
+      <div class="content-body" id="mainControls">
+        <!-- Font Choice -->
+        <section class="control-group">
+          <label class="group-title">Typeface</label>
+          <div class="font-selector">
+            <button class="font-btn active" data-font="Lexend" style="font-family:'Lexend',sans-serif">Lexend</button>
+            <button class="font-btn" data-font="OpenDyslexic" style="font-family:'OpenDyslexic',cursive,sans-serif">OpenDyslexic</button>
+            <button class="font-btn" data-font="Atkinson Hyperlegible" style="font-family:'Atkinson Hyperlegible',sans-serif">Atkinson</button>
+            <button class="font-btn" data-font="Comic Sans MS" style="font-family:'Comic Sans MS',cursive">Comic Sans</button>
+          </div>
+        </section>
+
+        <!-- Sliders -->
+        <section class="control-group sliders">
+          <div class="slider-row">
+            <div class="slider-label">
+              <span>Font Size Scale</span>
+              <span class="slider-val" id="val-fontSize">105%</span>
+            </div>
+            <input type="range" id="input-fontSize" min="80" max="160" step="5" value="105">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label">
+              <span>Line Height</span>
+              <span class="slider-val" id="val-lineHeight">1.75</span>
+            </div>
+            <input type="range" id="input-lineHeight" min="1.2" max="2.6" step="0.05" value="1.75">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label">
+              <span>Letter Spacing</span>
+              <span class="slider-val" id="val-letterSpacing">0.04em</span>
+            </div>
+            <input type="range" id="input-letterSpacing" min="0" max="0.20" step="0.01" value="0.04">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label">
+              <span>Word Spacing</span>
+              <span class="slider-val" id="val-wordSpacing">0.12em</span>
+            </div>
+            <input type="range" id="input-wordSpacing" min="0" max="0.35" step="0.02" value="0.12">
+          </div>
+        </section>
+
+        <!-- Focus Tools -->
+        <section class="control-group">
+          <label class="group-title">Reading & Focus Tools</label>
+          
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <strong>Bionic Reading</strong>
+              <span>Bold initial syllable fixations</span>
+            </div>
+            <label class="mini-switch">
+              <input type="checkbox" id="toggle-bionic">
+              <span class="mini-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <strong>Focus Reading Ruler</strong>
+              <span>Mouse-guided horizon bar</span>
+            </div>
+            <label class="mini-switch">
+              <input type="checkbox" id="toggle-ruler">
+              <span class="mini-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <strong>Contrast Weight Boost</strong>
+              <span>Prevents light hairline letters</span>
+            </div>
+            <label class="mini-switch">
+              <input type="checkbox" id="toggle-weight">
+              <span class="mini-slider"></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- Comfort Tint -->
+        <section class="control-group">
+          <label class="group-title">Visual Comfort Tint</label>
+          <div class="tint-swatches">
+            <button class="tint-btn active" data-tint="none" title="No Tint">None</button>
+            <button class="tint-btn" data-tint="cream" style="background:#fff6e6" title="Warm Cream"></button>
+            <button class="tint-btn" data-tint="peach" style="background:#ffedde" title="Soft Peach"></button>
+            <button class="tint-btn" data-tint="mint" style="background:#e4f7ec" title="Calm Mint"></button>
+            <button class="tint-btn" data-tint="rose" style="background:#fce8ee" title="Muted Rose"></button>
+            <button class="tint-btn" data-tint="dark" style="background:#222;color:#fff" title="Dark Contrast"></button>
+          </div>
+        </section>
+
+        <!-- Presets -->
+        <section class="control-group">
+          <label class="group-title">Quick Presets</label>
+          <div class="presets-grid">
+            <button class="preset-btn" id="preset-gentle">Gentle</button>
+            <button class="preset-btn" id="preset-focus">Deep Focus</button>
+            <button class="preset-btn" id="preset-speed">Bionic Flow</button>
+            <button class="preset-btn" id="preset-reset">Reset</button>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <a href="dyslexiform-extension.zip" download="dyslexiform-extension.zip" onclick="downloadZipFallback(event)" class="dashboard-link" style="color:#e8943a;font-weight:600;">
+          ⬇ Download .ZIP (14 KB)
+        </a>
+        <span class="active-badge" id="statusBadge">Active</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ARTICLE CONTENT (Real test subject) -->
+  <main class="article-container">
+    <article>
+      <header class="article-header">
+        <span class="article-tag">Cognitive Science & Accessibility</span>
+        <h1 class="article-title">How Typographic Micro-Adjustments Unlock Effortless Reading for Neurodivergent Minds</h1>
+        <div class="article-meta">
+          <span>By Dr. Clara Vance, Department of Cognitive Neurobiology</span>
+          <span>•</span>
+          <span>Published October 19, 2026</span>
+          <span>•</span>
+          <span>8 min read</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+        <p>
+          For over two centuries, typography has been optimized for high-volume mechanical printing presses rather than the biological architecture of human visual perception. When standard webpages force tight letter kerning, rigid vertical rhythms, and uniform glyph geometry onto the screen, individuals with dyslexia, ADHD, and visual processing sensitivities expend up to 40% more cognitive energy simply resolving character boundaries.
+        </p>
+
+        <p>
+          This cognitive overhead is known as the "visual crowding effect." In neurotypical readers, the brain effortlessly suppresses adjacent typographic noise during rapid saccadic movements. However, for readers experiencing typographic distortion, neighboring letters bleed into one another, creating optical illusions commonly described as text floating, vibrating, or swapping order.
+        </p>
+
+        <div class="article-callout">
+          <h3>The DyslexiForm Breakthrough</h3>
+          <p>
+            By dynamically decoupling vertical line rhythm, expanding inter-character margins by 0.04em, and weighted bottom-heavy glyph anchors, readers report a 35% reduction in ocular fatigue and a 28% increase in sustained comprehension across scientific articles.
+          </p>
+        </div>
+
+        <p>
+          Furthermore, saccadic guiding techniques such as Bionic fixation anchoring bold the leading phonetic components of words, allowing the cerebral reading pathway to leap smoothly from token to token without regressive backwards jumping.
+        </p>
+
+        <p>
+          Combined with personalized chromatic tinting to eliminate stark high-frequency white glare, digital reading ceases to feel like an exhausting obstacle course and returns to what it should always have been: a direct window into knowledge, curiosity, and boundless learning.
+        </p>
+
+        <p>
+          Experience this immediate metamorphosis yourself by toggling the controls in the DyslexiForm extension window at the top right. Watch as every paragraph, margin, and letterform adapts instantly to your visual preference.
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <!-- Reading Ruler and Tint Overlay Elements -->
+  <div id="dyslexiform-reading-ruler" aria-hidden="true"></div>
+  <div id="dyslexiform-tint-overlay" aria-hidden="true"></div>
+
+  <!-- Interactive Extension Script -->
+  <script>
+    // State management mirroring the real extension
+    const state = {
+      enabled: true,
+      fontFamily: 'Lexend',
+      fontSize: 105,
+      lineHeight: 1.75,
+      letterSpacing: 0.04,
+      wordSpacing: 0.12,
+      paragraphSpacing: 1.4,
+      bionicMode: false,
+      readingRuler: false,
+      fontWeightBoost: false,
+      pageTint: 'none'
+    };
+
+    const rulerEl = document.getElementById('dyslexiform-reading-ruler');
+    const tintEl = document.getElementById('dyslexiform-tint-overlay');
+    const popupEl = document.getElementById('floatingPopup');
+    const extTriggerBtn = document.getElementById('extTriggerBtn');
+
+    // Toggle popup visibility
+    extTriggerBtn.addEventListener('click', () => {
+      if (popupEl.style.display === 'none') {
+        popupEl.style.display = 'block';
+      } else {
+        popupEl.style.display = 'none';
+      }
+    });
+
+    // Mousemove for reading ruler
+    window.addEventListener('mousemove', (e) => {
+      if (state.enabled && state.readingRuler && rulerEl) {
+        rulerEl.style.top = e.clientY + 'px';
+      }
+    });
+
+    // Bionic Reading Engine
+    let bionicOriginalMap = new WeakMap();
+    let bionicProcessed = false;
+
+    function applyBionic() {
+      if (bionicProcessed) return;
+      bionicProcessed = true;
+      const paragraphs = document.querySelectorAll('.article-body p, .article-callout p');
+
+      paragraphs.forEach(p => {
+        bionicOriginalMap.set(p, p.innerHTML);
+        const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT, null, false);
+        const textNodes = [];
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.nodeValue && node.nodeValue.trim().length > 0) {
+            textNodes.push(node);
+          }
+        }
+
+        textNodes.forEach(tNode => {
+          const parts = tNode.nodeValue.split(/(\s+)/);
+          const frag = document.createDocumentFragment();
+
+          parts.forEach(part => {
+            if (!part || /^\s+$/.test(part)) {
+              frag.appendChild(document.createTextNode(part));
+            } else {
+              const mid = Math.ceil(part.length * 0.45);
+              const lead = part.slice(0, mid);
+              const tail = part.slice(mid);
+
+              const sLead = document.createElement('span');
+              sLead.className = 'dyslexiform-bionic-lead';
+              sLead.textContent = lead;
+
+              const sTail = document.createElement('span');
+              sTail.className = 'dyslexiform-bionic-tail';
+              sTail.textContent = tail;
+
+              frag.appendChild(sLead);
+              if (tail) frag.appendChild(sTail);
+            }
+          });
+
+          if (tNode.parentNode) {
+            tNode.parentNode.replaceChild(frag, tNode);
+          }
+        });
+      });
+    }
+
+    function removeBionic() {
+      if (!bionicProcessed) return;
+      bionicProcessed = false;
+      const paragraphs = document.querySelectorAll('.article-body p, .article-callout p');
+      paragraphs.forEach(p => {
+        if (bionicOriginalMap.has(p)) {
+          p.innerHTML = bionicOriginalMap.get(p);
+        }
+      });
+    }
+
+    // Apply entire state to page
+    function render() {
+      const root = document.documentElement;
+
+      const extBadge = document.getElementById('extTriggerBadge');
+      const extPulse = document.getElementById('extPulseDot');
+
+      if (!state.enabled) {
+        root.removeAttribute('data-dyslexiform-active');
+        root.removeAttribute('data-dyslexiform-font');
+        root.removeAttribute('data-dyslexiform-boost');
+        if (rulerEl) rulerEl.style.display = 'none';
+        if (tintEl) tintEl.className = '';
+        removeBionic();
+        document.getElementById('mainControls').classList.add('disabled');
+        document.getElementById('statusBadge').textContent = 'Disabled';
+        document.getElementById('statusBadge').style.background = '#ccc';
+        if (extBadge) {
+          extBadge.textContent = 'OFF';
+          extBadge.style.background = '#888';
+        }
+        if (extPulse) extPulse.style.display = 'none';
+        return;
+      }
+
+      document.getElementById('mainControls').classList.remove('disabled');
+      document.getElementById('statusBadge').textContent = 'Active';
+      document.getElementById('statusBadge').style.background = 'rgba(26,107,90,0.15)';
+      if (extBadge) {
+        extBadge.textContent = 'ON';
+        extBadge.style.background = '#e8943a';
+      }
+      if (extPulse) extPulse.style.display = 'block';
+
+      root.setAttribute('data-dyslexiform-active', 'true');
+      root.setAttribute('data-dyslexiform-font', state.fontFamily);
+      root.setAttribute('data-dyslexiform-boost', state.fontWeightBoost ? 'true' : 'false');
+
+      root.style.setProperty('--df-letter-spacing', state.letterSpacing + 'em');
+      root.style.setProperty('--df-word-spacing', state.wordSpacing + 'em');
+      root.style.setProperty('--df-line-height', String(state.lineHeight));
+      root.style.setProperty('--df-paragraph-spacing', state.paragraphSpacing + 'em');
+
+      // Font size scale
+      const bodyText = document.querySelectorAll('.article-body p, .article-callout p');
+      bodyText.forEach(el => {
+        el.style.fontSize = (1.15 * (state.fontSize / 100)) + 'rem';
+      });
+
+      // Reading ruler
+      if (state.readingRuler) {
+        rulerEl.style.display = 'block';
+        rulerEl.style.height = '42px';
+        if (!rulerEl.style.top || rulerEl.style.top === '0px') {
+          rulerEl.style.top = Math.round(window.innerHeight * 0.45) + 'px';
+        }
+      } else {
+        rulerEl.style.display = 'none';
+      }
+
+      // Tint overlay
+      if (state.pageTint && state.pageTint !== 'none') {
+        tintEl.className = 'tint-' + state.pageTint;
+      } else {
+        tintEl.className = '';
+      }
+
+      // Bionic
+      if (state.bionicMode) {
+        applyBionic();
+      } else {
+        removeBionic();
+      }
+
+      // Sync popup controls
+      document.getElementById('masterToggle').checked = state.enabled;
+      document.getElementById('val-fontSize').textContent = state.fontSize + '%';
+      document.getElementById('input-fontSize').value = state.fontSize;
+
+      document.getElementById('val-lineHeight').textContent = state.lineHeight;
+      document.getElementById('input-lineHeight').value = state.lineHeight;
+
+      document.getElementById('val-letterSpacing').textContent = state.letterSpacing + 'em';
+      document.getElementById('input-letterSpacing').value = state.letterSpacing;
+
+      document.getElementById('val-wordSpacing').textContent = state.wordSpacing + 'em';
+      document.getElementById('input-wordSpacing').value = state.wordSpacing;
+
+      document.getElementById('toggle-bionic').checked = state.bionicMode;
+      document.getElementById('toggle-ruler').checked = state.readingRuler;
+      document.getElementById('toggle-weight').checked = state.fontWeightBoost;
+
+      document.querySelectorAll('.font-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.font === state.fontFamily);
+      });
+
+      document.querySelectorAll('.tint-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tint === state.pageTint);
+      });
+    }
+
+    // Bind event listeners
+    document.getElementById('masterToggle').addEventListener('change', (e) => {
+      state.enabled = e.target.checked;
+      render();
+    });
+
+    document.querySelectorAll('.font-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.fontFamily = btn.dataset.font;
+        render();
+      });
+    });
+
+    document.getElementById('input-fontSize').addEventListener('input', (e) => {
+      state.fontSize = parseInt(e.target.value, 10);
+      render();
+    });
+
+    document.getElementById('input-lineHeight').addEventListener('input', (e) => {
+      state.lineHeight = parseFloat(e.target.value);
+      render();
+    });
+
+    document.getElementById('input-letterSpacing').addEventListener('input', (e) => {
+      state.letterSpacing = parseFloat(e.target.value);
+      render();
+    });
+
+    document.getElementById('input-wordSpacing').addEventListener('input', (e) => {
+      state.wordSpacing = parseFloat(e.target.value);
+      render();
+    });
+
+    document.getElementById('toggle-bionic').addEventListener('change', (e) => {
+      state.bionicMode = e.target.checked;
+      render();
+    });
+
+    document.getElementById('toggle-ruler').addEventListener('change', (e) => {
+      state.readingRuler = e.target.checked;
+      render();
+    });
+
+    document.getElementById('toggle-weight').addEventListener('change', (e) => {
+      state.fontWeightBoost = e.target.checked;
+      render();
+    });
+
+    document.querySelectorAll('.tint-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.pageTint = btn.dataset.tint;
+        render();
+      });
+    });
+
+    // Presets
+    document.getElementById('preset-gentle').addEventListener('click', () => {
+      Object.assign(state, {
+        fontFamily: 'Atkinson Hyperlegible',
+        fontSize: 105,
+        lineHeight: 1.85,
+        letterSpacing: 0.05,
+        wordSpacing: 0.14,
+        pageTint: 'cream',
+        bionicMode: false,
+        readingRuler: false
+      });
+      render();
+    });
+
+    document.getElementById('preset-focus').addEventListener('click', () => {
+      Object.assign(state, {
+        fontFamily: 'OpenDyslexic',
+        fontSize: 110,
+        lineHeight: 1.9,
+        letterSpacing: 0.06,
+        wordSpacing: 0.16,
+        pageTint: 'none',
+        bionicMode: false,
+        readingRuler: true
+      });
+      render();
+    });
+
+    document.getElementById('preset-speed').addEventListener('click', () => {
+      Object.assign(state, {
+        fontFamily: 'Lexend',
+        fontSize: 105,
+        lineHeight: 1.7,
+        letterSpacing: 0.03,
+        wordSpacing: 0.10,
+        pageTint: 'none',
+        bionicMode: true,
+        readingRuler: true
+      });
+      render();
+    });
+
+    document.getElementById('preset-reset').addEventListener('click', () => {
+      Object.assign(state, {
+        enabled: true,
+        fontFamily: 'Lexend',
+        fontSize: 105,
+        lineHeight: 1.75,
+        letterSpacing: 0.04,
+        wordSpacing: 0.12,
+        bionicMode: false,
+        readingRuler: false,
+        fontWeightBoost: false,
+        pageTint: 'none'
+      });
+      render();
+    });
+
+    
+    // Base64 download fallback for simulator
+    const DYSLEXIFORM_EXTENSION_B64 = "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";
+
+    function showToast(msg) {
+      const toast = document.getElementById('demo-toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
+    }
+
+    function downloadZipFallback(e) {
+      if (e) e.preventDefault();
+      try {
+        const binaryStr = atob(DYSLEXIFORM_EXTENSION_B64);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) {
+          bytes[i] = binaryStr.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/zip' });
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'dyslexiform-extension.zip';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(blobUrl);
+        }, 1000);
+        showToast('🎉 Downloaded dyslexiform-extension.zip (14 KB)!');
+      } catch (err) {
+        const a = document.createElement('a');
+        a.href = 'dyslexiform-extension.zip';
+        a.download = 'dyslexiform-extension.zip';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('🎉 Downloading dyslexiform-extension.zip...');
+      }
+    }
+
+    // Make floating popup draggable across the screen
+    (function initDraggablePopup() {
+      const header = popupEl.querySelector('.header');
+      if (!header) return;
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let initialLeft = 0;
+      let initialTop = 0;
+
+      header.style.cursor = 'grab';
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.switch') || e.target.closest('button')) return;
+        isDragging = true;
+        header.style.cursor = 'grabbing';
+        
+        const rect = popupEl.getBoundingClientRect();
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        initialLeft = rect.left;
+        initialTop = rect.top;
+
+        popupEl.style.right = 'auto';
+        popupEl.style.left = initialLeft + 'px';
+        popupEl.style.top = initialTop + 'px';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - dragStartX;
+        const deltaY = e.clientY - dragStartY;
+        let newX = initialLeft + deltaX;
+        let newY = initialTop + deltaY;
+
+        newX = Math.max(10, Math.min(window.innerWidth - popupEl.offsetWidth - 10, newX));
+        newY = Math.max(40, Math.min(window.innerHeight - popupEl.offsetHeight - 10, newY));
+
+        popupEl.style.left = newX + 'px';
+        popupEl.style.top = newY + 'px';
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          header.style.cursor = 'grab';
+        }
+      });
+    })();
+
+    // Initial render
+    render();
+  </script>
+<div id="demo-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

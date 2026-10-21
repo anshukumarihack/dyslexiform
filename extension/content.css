@@ -1,0 +1,184 @@
+/* DyslexiForm Content Styles */
+
+/* Injected Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+
+/* Fallback OpenDyslexic from reliable CDN */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/opendyslexic@1.0.3/dist/OpenDyslexic-Regular.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/opendyslexic@1.0.3/dist/OpenDyslexic-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/opendyslexic@1.0.3/dist/OpenDyslexic-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Base typographic override when enabled */
+html[data-dyslexiform-active="true"] p,
+html[data-dyslexiform-active="true"] li,
+html[data-dyslexiform-active="true"] a,
+html[data-dyslexiform-active="true"] span,
+html[data-dyslexiform-active="true"] article,
+html[data-dyslexiform-active="true"] blockquote,
+html[data-dyslexiform-active="true"] label,
+html[data-dyslexiform-active="true"] td,
+html[data-dyslexiform-active="true"] th,
+html[data-dyslexiform-active="true"] dd,
+html[data-dyslexiform-active="true"] dt {
+  letter-spacing: var(--df-letter-spacing, 0.04em) !important;
+  word-spacing: var(--df-word-spacing, 0.12em) !important;
+  line-height: var(--df-line-height, 1.75) !important;
+}
+
+html[data-dyslexiform-active="true"] p,
+html[data-dyslexiform-active="true"] article > p,
+html[data-dyslexiform-active="true"] .content p {
+  margin-bottom: var(--df-paragraph-spacing, 1.4em) !important;
+}
+
+/* Font family override */
+html[data-dyslexiform-font="Lexend"] body,
+html[data-dyslexiform-font="Lexend"] p,
+html[data-dyslexiform-font="Lexend"] span,
+html[data-dyslexiform-font="Lexend"] div,
+html[data-dyslexiform-font="Lexend"] article,
+html[data-dyslexiform-font="Lexend"] section,
+html[data-dyslexiform-font="Lexend"] li,
+html[data-dyslexiform-font="Lexend"] a,
+html[data-dyslexiform-font="Lexend"] h1,
+html[data-dyslexiform-font="Lexend"] h2,
+html[data-dyslexiform-font="Lexend"] h3,
+html[data-dyslexiform-font="Lexend"] h4,
+html[data-dyslexiform-font="Lexend"] h5,
+html[data-dyslexiform-font="Lexend"] h6 {
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+html[data-dyslexiform-font="OpenDyslexic"] body,
+html[data-dyslexiform-font="OpenDyslexic"] p,
+html[data-dyslexiform-font="OpenDyslexic"] span,
+html[data-dyslexiform-font="OpenDyslexic"] div,
+html[data-dyslexiform-font="OpenDyslexic"] article,
+html[data-dyslexiform-font="OpenDyslexic"] section,
+html[data-dyslexiform-font="OpenDyslexic"] li,
+html[data-dyslexiform-font="OpenDyslexic"] a,
+html[data-dyslexiform-font="OpenDyslexic"] h1,
+html[data-dyslexiform-font="OpenDyslexic"] h2,
+html[data-dyslexiform-font="OpenDyslexic"] h3,
+html[data-dyslexiform-font="OpenDyslexic"] h4,
+html[data-dyslexiform-font="OpenDyslexic"] h5,
+html[data-dyslexiform-font="OpenDyslexic"] h6 {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+}
+
+html[data-dyslexiform-font="Atkinson Hyperlegible"] body,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] p,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] span,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] div,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] article,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] section,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] li,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] a,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] h1,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] h2,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] h3,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] h4,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] h5,
+html[data-dyslexiform-font="Atkinson Hyperlegible"] h6 {
+  font-family: 'Atkinson Hyperlegible', sans-serif !important;
+}
+
+html[data-dyslexiform-font="Comic Sans MS"] body,
+html[data-dyslexiform-font="Comic Sans MS"] p,
+html[data-dyslexiform-font="Comic Sans MS"] span,
+html[data-dyslexiform-font="Comic Sans MS"] div,
+html[data-dyslexiform-font="Comic Sans MS"] article,
+html[data-dyslexiform-font="Comic Sans MS"] section,
+html[data-dyslexiform-font="Comic Sans MS"] li,
+html[data-dyslexiform-font="Comic Sans MS"] a,
+html[data-dyslexiform-font="Comic Sans MS"] h1,
+html[data-dyslexiform-font="Comic Sans MS"] h2,
+html[data-dyslexiform-font="Comic Sans MS"] h3,
+html[data-dyslexiform-font="Comic Sans MS"] h4,
+html[data-dyslexiform-font="Comic Sans MS"] h5,
+html[data-dyslexiform-font="Comic Sans MS"] h6 {
+  font-family: 'Comic Sans MS', 'Comic Neue', cursive, sans-serif !important;
+}
+
+/* Font weight boost */
+html[data-dyslexiform-boost="true"] p,
+html[data-dyslexiform-boost="true"] li,
+html[data-dyslexiform-boost="true"] a,
+html[data-dyslexiform-boost="true"] span {
+  font-weight: 500 !important;
+}
+
+/* Bionic Reading Highlighting */
+.dyslexiform-bionic-lead {
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+.dyslexiform-bionic-tail {
+  font-weight: 400 !important;
+  opacity: 0.88 !important;
+}
+
+/* Focus Reading Ruler */
+#dyslexiform-reading-ruler {
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  pointer-events: none;
+  z-index: 2147483640;
+  transform: translateY(-50%);
+  display: none;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, var(--df-ruler-dim, 0.25));
+  border-top: 2px solid #e8943a;
+  border-bottom: 2px solid #e8943a;
+  background: rgba(232, 148, 58, 0.08);
+  transition: height 120ms ease, opacity 150ms ease;
+}
+
+/* Page Tint Overlays */
+#dyslexiform-tint-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2147483630;
+  display: none;
+  mix-blend-mode: multiply;
+  transition: background-color 200ms ease;
+}
+
+/* Tint Presets */
+#dyslexiform-tint-overlay.tint-cream {
+  display: block;
+  background-color: rgba(255, 246, 230, 0.65);
+}
+#dyslexiform-tint-overlay.tint-peach {
+  display: block;
+  background-color: rgba(255, 237, 222, 0.55);
+}
+#dyslexiform-tint-overlay.tint-mint {
+  display: block;
+  background-color: rgba(228, 247, 236, 0.6);
+}
+#dyslexiform-tint-overlay.tint-rose {
+  display: block;
+  background-color: rgba(252, 232, 238, 0.55);
+}
+#dyslexiform-tint-overlay.tint-dark {
+  display: block;
+  background-color: rgba(18, 18, 18, 0.82);
+  mix-blend-mode: difference;
+}

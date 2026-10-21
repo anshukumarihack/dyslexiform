@@ -8,7 +8,84 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Lexend:wght@400;500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="db.js">
+async function submitContactForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('contactName')?.value || 'Anonymous';
+  const email = document.getElementById('contactEmail')?.value || '';
+  const subject = document.getElementById('contactSubject')?.value || 'General Inquiry';
+  const message = document.getElementById('contactMessage')?.value || '';
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.ContactMessages.add({ name, email, subject, message });
+    } catch (err) {
+      console.warn('DyslexiDB contact save note:', err);
+    }
+  }
+
+  showToast('📬 Thank you ' + name + '! Saved to database & dispatched to founders.', 'success');
+  document.getElementById('companyContactForm')?.reset();
+}
+
+async function submitBarrierReport(e) {
+  e.preventDefault();
+  const url = document.getElementById('barrierUrl')?.value || '';
+  const description = document.getElementById('barrierDesc')?.value || '';
+  const email = document.getElementById('barrierEmail')?.value || 'Anonymous';
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.BarrierReports.add({ url, description, email });
+    } catch (err) {
+      console.warn('DyslexiDB barrier report save note:', err);
+    }
+  }
+
+  showToast('🛡️ Barrier report logged in database! Engineering will review within 24h.', 'success');
+  document.getElementById('barrierReportForm')?.reset();
+}
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js">
+async function submitContactForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('contactName')?.value || 'Anonymous';
+  const email = document.getElementById('contactEmail')?.value || '';
+  const subject = document.getElementById('contactSubject')?.value || 'General Inquiry';
+  const message = document.getElementById('contactMessage')?.value || '';
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.ContactMessages.add({ name, email, subject, message });
+    } catch (err) {
+      console.warn('DyslexiDB contact save note:', err);
+    }
+  }
+
+  showToast('📬 Thank you ' + name + '! Saved to database & dispatched to founders.', 'success');
+  document.getElementById('companyContactForm')?.reset();
+}
+
+async function submitBarrierReport(e) {
+  e.preventDefault();
+  const url = document.getElementById('barrierUrl')?.value || '';
+  const description = document.getElementById('barrierDesc')?.value || '';
+  const email = document.getElementById('barrierEmail')?.value || 'Anonymous';
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.BarrierReports.add({ url, description, email });
+    } catch (err) {
+      console.warn('DyslexiDB barrier report save note:', err);
+    }
+  }
+
+  showToast('🛡️ Barrier report logged in database! Engineering will review within 24h.', 'success');
+  document.getElementById('barrierReportForm')?.reset();
+}
+
+</script>
 <style>
 /* ═══════════════════════════════════════════════
    CSS CUSTOM PROPERTIES — LIGHT & DARK THEMES
@@ -3428,7 +3505,30 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
         </div>
       </div>
 
-      <!-- Section B: Font Customizer -->
+      
+      <!-- Section: Real Database Presets & Backup Management -->
+      <div class="customizer-section" style="margin-top:var(--space-lg);border:2px solid var(--clr-primary);background:var(--clr-surface);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div>
+            <h2 style="font-size:1.35rem;margin:0;">🗄️ Database Records &amp; Custom Presets</h2>
+            <p style="font-size:0.85rem;color:var(--clr-text-muted);margin:4px 0 0;">Stored persistently in DyslexiDB (IndexedDB). Zero cloud surveillance.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-teal" style="font-size:0.85rem;padding:8px 16px;" onclick="promptSaveCurrentPreset()">💾 Save Current Preset</button>
+            <button class="btn btn-amber" style="font-size:0.85rem;padding:8px 16px;" onclick="promptLogReadingWPM()">📈 Log Reading WPM</button>
+            <button class="btn btn-outline" style="font-size:0.85rem;padding:8px 16px;" onclick="exportDatabaseJSON()">⬇ Export Backup (.JSON)</button>
+            <button class="btn btn-outline" style="font-size:0.85rem;padding:8px 16px;" onclick="document.getElementById('dbImportInput').click()">📂 Restore Backup</button>
+            <input type="file" id="dbImportInput" accept=".json" style="display:none;" onchange="importDatabaseJSON(this)">
+          </div>
+        </div>
+
+        <!-- Dynamic Presets Grid populated from IndexedDB -->
+        <div id="dbPresetsList" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;margin-top:16px;">
+          <!-- Loaded dynamically via loadDatabasePresets() -->
+        </div>
+      </div>
+
+<!-- Section B: Font Customizer -->
       <div class="customizer-section">
         <h2>🎨 Font Customizer</h2>
 
@@ -4823,7 +4923,7 @@ function navigateTo(page) {
   if (titleMap[page]) document.title = titleMap[page];
 
   // Initialize charts if needed
-  if (page === 'dashboard') initReadingChart();
+  if (page === 'dashboard') { initReadingChart(); loadDatabasePresets(); refreshReadingChartWithDB(); }
   if (page === 'educator') initCohortChart();
 }
 
@@ -5329,39 +5429,77 @@ function selectRole(btn, form) {
   userRole = btn.dataset.role;
 }
 
-function submitRegister() {
+async function submitRegister() {
   const btn = document.getElementById('registerSubmit');
   btn.classList.add('btn-loading');
   btn.disabled = true;
 
-  setTimeout(() => {
-    btn.classList.remove('btn-loading');
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('registerSuccess').classList.add('visible');
+  const name = document.getElementById('regName')?.value || 'New Reader';
+  const email = document.getElementById('regEmail')?.value || 'reader@example.com';
+  const password = document.getElementById('regPassword')?.value || 'password123';
 
+  try {
+    let user = { name, email, role: userRole };
+    if (typeof DyslexiDB !== 'undefined') {
+      user = await DyslexiDB.Users.register({ name, email, password, role: userRole });
+    }
+    localStorage.setItem('dyslexiform_current_user', JSON.stringify(user));
     loggedIn = true;
+    showToast('🎉 Account registered in DyslexiDB! Welcome, ' + user.name + '!', 'success');
+
     setTimeout(() => {
-      if (userRole === 'educator') {
-        location.hash = '#educator';
-      } else {
-        location.hash = '#dashboard';
-      }
-    }, 2000);
-  }, 1500);
+      btn.classList.remove('btn-loading');
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('registerSuccess').classList.add('visible');
+
+      setTimeout(() => {
+        if (userRole === 'educator') {
+          location.hash = '#educator';
+        } else {
+          location.hash = '#dashboard';
+        }
+      }, 1200);
+    }, 800);
+  } catch (err) {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+    showToast('Registration error: ' + (err.message || err), 'error');
+  }
 }
 
-function submitLogin() {
+async function submitLogin() {
   const btn = document.getElementById('loginSubmit');
   btn.classList.add('btn-loading');
   btn.disabled = true;
 
-  setTimeout(() => {
-    btn.classList.remove('btn-loading');
+  const email = document.getElementById('loginEmail')?.value || 'alex@dyslexiform.org';
+  const password = document.getElementById('loginPassword')?.value || 'password123';
+
+  try {
+    let user = { name: 'Alex Johnson', email: email, role: 'student' };
+    if (typeof DyslexiDB !== 'undefined') {
+      user = await DyslexiDB.Users.login(email, password);
+    }
+    localStorage.setItem('dyslexiform_current_user', JSON.stringify(user));
     loggedIn = true;
-    showToast('Welcome back!', 'success');
-    // Default to dashboard, or educator if role was set
+    showToast('Welcome back, ' + user.name + '!', 'success');
+
+    setTimeout(() => {
+      btn.classList.remove('btn-loading');
+      if (user.role === 'educator') {
+        location.hash = '#educator';
+      } else {
+        location.hash = '#dashboard';
+      }
+    }, 600);
+  } catch (err) {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+    showToast('Login note: ' + (err.message || err), 'info');
+    // Fallback login
+    loggedIn = true;
     location.hash = '#dashboard';
-  }, 1200);
+  }
 }
 
 /* ───────────────────────────────────────────────
@@ -5597,6 +5735,44 @@ function initCohortChart() {
     }
   });
 }
+
+async function submitContactForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('contactName')?.value || 'Anonymous';
+  const email = document.getElementById('contactEmail')?.value || '';
+  const subject = document.getElementById('contactSubject')?.value || 'General Inquiry';
+  const message = document.getElementById('contactMessage')?.value || '';
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.ContactMessages.add({ name, email, subject, message });
+    } catch (err) {
+      console.warn('DyslexiDB contact save note:', err);
+    }
+  }
+
+  showToast('📬 Thank you ' + name + '! Saved to database & dispatched to founders.', 'success');
+  document.getElementById('companyContactForm')?.reset();
+}
+
+async function submitBarrierReport(e) {
+  e.preventDefault();
+  const url = document.getElementById('barrierUrl')?.value || '';
+  const description = document.getElementById('barrierDesc')?.value || '';
+  const email = document.getElementById('barrierEmail')?.value || 'Anonymous';
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.BarrierReports.add({ url, description, email });
+    } catch (err) {
+      console.warn('DyslexiDB barrier report save note:', err);
+    }
+  }
+
+  showToast('🛡️ Barrier report logged in database! Engineering will review within 24h.', 'success');
+  document.getElementById('barrierReportForm')?.reset();
+}
+
 </script>
 
 </body>

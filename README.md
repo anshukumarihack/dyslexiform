@@ -76,6 +76,10 @@ dyslexiform/
 │   ├── icons/                    # High-res icons (16, 32, 48, 128px)
 │   └── README.md                 # Extension setup instructions
 │
+├── db.js                         # Universal IndexedDB Database Engine (DyslexiDB)
+│                                 # Stores users, presets, reading logs, cohorts, contact msgs
+├── server.js                     # Node.js backend server with REST API & JSON database
+├── package.json                  # Scripts & project metadata
 ├── index.html                    # Complete marketing & management platform
 │   ├── #product                  # Deep technical engine breakdowns + live mini-tuner
 │   ├── #resources                # 3-step typographic diagnostic & scientific papers
@@ -91,6 +95,31 @@ dyslexiform/
 ├── LICENSE                       # MIT License
 └── README.md                     # Project documentation
 ```
+
+---
+
+## 🗄️ Database Architecture (DyslexiDB)
+
+DyslexiForm features a **dual-layer database system** designed to work seamlessly both on static hosts (like GitHub Pages) and as a full-stack local server:
+
+1. **Client-Side Universal Database (`db.js` / IndexedDB)**:
+   - High-capacity local relational store that requires zero backend installation.
+   - **Tables / Stores**:
+     - `users`: User registration, credential verification, roles (student/educator/reader).
+     - `presets`: Custom typographic presets (fonts, line height, letter/word spacing, bionic mode, ruler, color tints).
+     - `reading_logs`: Reading speed records (WPM, duration, dates) feeding Chart.js analytics.
+     - `cohorts`: Classroom student rosters and preset assignments.
+     - `contact_messages`: Inquiries sent through `#company`.
+     - `barrier_reports`: Accessibility barrier reports sent through `#accessibility`.
+   - **One-Click Backup & Restore**: Export all database records as a single `.json` file and restore on any device!
+
+2. **Backend Server & REST API (`server.js`)**:
+   - Zero-dependency Node.js native server providing file hosting, database persistence (`data/database.json`), and REST API endpoints:
+     - `POST /api/register` & `POST /api/login`
+     - `GET /api/presets` & `POST /api/presets`
+     - `GET /api/reading-logs` & `POST /api/reading-logs`
+     - `POST /api/contact` & `POST /api/barrier-report`
+     - `GET /api/backup` (Download JSON database backup)
 
 ---
 
@@ -114,8 +143,19 @@ DyslexiForm is built to conform to the highest accessibility benchmarks:
 
 ## 🛠️ Local Development
 
-Serve the marketing platform and simulator locally with any static web server:
+### Option 1: Full-Stack Server with Database & REST API (Recommended)
+```bash
+# Start backend server & database (Zero external npm dependencies needed!)
+npm start
+# or: node server.js
+```
+Then visit:
+- **Web Platform & Dashboard**: `http://localhost:8080/index.html`
+- **Interactive Simulator**: `http://localhost:8080/demo.html`
+- **REST API Health Check**: `http://localhost:8080/api/health`
+- **Database Backup Download**: `http://localhost:8080/api/backup`
 
+### Option 2: Static Server (Client-Side IndexedDB Mode)
 ```bash
 # Using Node http-server
 npx http-server . -p 8080 -c-1
@@ -123,10 +163,6 @@ npx http-server . -p 8080 -c-1
 # Or using Python built-in server
 python -m http.server 8080
 ```
-
-Then visit:
-- **Web Platform**: `http://localhost:8080/index.html`
-- **Live Simulator**: `http://localhost:8080/demo.html`
 
 ---
 

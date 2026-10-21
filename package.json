@@ -1,0 +1,22 @@
+{
+  "name": "dyslexiform",
+  "version": "2.1.4",
+  "description": "Real-time typographic accessibility browser extension and management platform for neurodivergent readers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "npx http-server . -p 8080 -c-1"
+  },
+  "keywords": [
+    "accessibility",
+    "dyslexia",
+    "typography",
+    "bionic-reading",
+    "chrome-extension",
+    "wcag-aaa"
+  ],
+  "author": "DyslexiForm Contributors",
+  "license": "MIT",
+  "dependencies": {}
+}

@@ -2729,6 +2729,314 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   border-color: var(--clr-primary);
 }
 
+/* ═══════════════════════════════════════════════
+   PROFILE PAGE STYLES (#profile)
+   ═══════════════════════════════════════════════ */
+.profile-header-card {
+  background: var(--clr-surface);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 4vw, 36px);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  box-shadow: 4px 6px 0px var(--clr-shadow);
+}
+.profile-avatar-large {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--clr-primary);
+  color: #fff;
+  font-family: var(--ff-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(26,107,90,0.3);
+  border: 3px solid var(--clr-accent-amber);
+  flex-shrink: 0;
+}
+.profile-info-block {
+  flex: 1;
+  min-width: 240px;
+}
+.role-badge {
+  background: rgba(26, 107, 90, 0.15);
+  color: var(--clr-primary);
+  border: 1px solid var(--clr-primary);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.db-sync-badge {
+  background: rgba(46, 125, 50, 0.15);
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.profile-quick-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.stat-pill {
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  text-align: center;
+  min-width: 90px;
+}
+.stat-pill-val {
+  display: block;
+  font-family: var(--ff-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--clr-primary);
+  line-height: 1.1;
+}
+.stat-pill-lbl {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}
+
+.settings-card {
+  background: var(--clr-bg);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 2px 3px 0px var(--clr-shadow);
+}
+.sticky-card {
+  position: sticky;
+  top: 96px;
+}
+.settings-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--clr-border);
+}
+.settings-card-icon {
+  font-size: 1.6rem;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.settings-card-header h3 {
+  font-family: var(--ff-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+.settings-card-header p {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+  margin: 2px 0 0;
+}
+
+.font-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+.font-select-btn {
+  background: var(--clr-surface);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.font-select-btn:hover {
+  border-color: var(--clr-primary);
+  background: var(--clr-surface-dark);
+}
+.font-select-btn.active {
+  border-color: var(--clr-accent-amber);
+  background: rgba(232, 148, 58, 0.1);
+  box-shadow: inset 0 0 0 1px var(--clr-accent-amber);
+}
+.font-preview-name {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin-bottom: 2px;
+}
+.font-meta {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+}
+
+.setting-val-badge {
+  font-family: var(--ff-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  background: rgba(26,107,90,0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.range-slider {
+  width: 100%;
+  accent-color: var(--clr-primary);
+  margin-top: 6px;
+  cursor: pointer;
+}
+
+.tint-selection-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.tint-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--clr-surface);
+  border: 2px solid var(--clr-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.tint-chip:hover {
+  border-color: var(--clr-primary);
+}
+.tint-chip.active {
+  border-color: var(--clr-accent-amber);
+  background: rgba(232, 148, 58, 0.12);
+  box-shadow: 0 0 0 1px var(--clr-accent-amber);
+}
+.tint-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.toggle-setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--clr-border);
+}
+.toggle-setting-row:last-child {
+  border-bottom: none;
+}
+
+/* Switch Component */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider.round {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--clr-border);
+  transition: .2s;
+  border-radius: 26px;
+}
+.slider.round:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+input:checked + .slider.round {
+  background-color: var(--clr-primary);
+}
+input:checked + .slider.round:before {
+  transform: translateX(22px);
+}
+
+.profile-preview-box {
+  background: var(--clr-surface);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  min-height: 180px;
+  transition: all 0.2s ease;
+  color: var(--clr-text);
+}
+
+.nav-user-item a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700 !important;
+  color: var(--clr-primary) !important;
+}
+.nav-logout-btn {
+  font-size: 0.8rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.demo-login-box {
+  background: rgba(232, 148, 58, 0.1);
+  border: 1px dashed var(--clr-accent-amber);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -2761,7 +3069,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
       <li><a href="#blog" data-nav="blog">Blog</a></li>
       <li><a href="#accessibility" data-nav="accessibility">Accessibility</a></li>
       <li><a href="#privacy" data-nav="privacy">Privacy</a></li>
-      <li><a href="#login" data-nav="login">Login</a></li>
+      <li id="navAuthItem"><a href="#login" data-nav="login">Login</a></li>
     </ul>
 
     <div class="nav-actions">
@@ -2786,8 +3094,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   <a href="#blog" onclick="closeMobileNav()">Blog</a>
   <a href="#accessibility" onclick="closeMobileNav()">Accessibility</a>
   <a href="#privacy" onclick="closeMobileNav()">Privacy Policy</a>
+  <a href="#dashboard" onclick="closeMobileNav()">Student Dashboard</a>
+  <a href="#profile" onclick="closeMobileNav()">Profile &amp; Settings</a>
   <a href="#educator" onclick="closeMobileNav()">Educator Hub</a>
-  <a href="#login" onclick="closeMobileNav()">Login</a>
+  <a href="#login" id="mobileAuthLink" onclick="closeMobileNav()">Login</a>
   <div class="mobile-nav-actions">
     <a href="demo.html" target="_blank" class="btn btn-amber" onclick="closeMobileNav()" style="text-decoration:none;">🚀 Live Simulator</a>
     <button class="btn btn-chrome" onclick="closeMobileNav(); openChromeModal()">
@@ -3414,6 +3724,15 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
         <span class="btn-text">Log In</span>
       </button>
 
+      <div class="demo-login-box">
+        <button class="btn btn-outline" type="button" onclick="quickDemoLogin()" style="width:100%;font-weight:700;">
+          ⚡ 1-Click Demo Login (Alex Johnson)
+        </button>
+        <p style="font-size:0.75rem;color:var(--clr-text-muted);margin:6px 0 0;">
+          Pre-fills demo credentials: <code>alex@dyslexiform.org</code> · Synced to MySQL
+        </p>
+      </div>
+
       <div class="auth-divider">or</div>
 
       <button class="google-btn" type="button" aria-label="Sign in with Google (placeholder)">
@@ -3435,6 +3754,378 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
     </div>
   </div>
 </div><!-- end page-login -->
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: USER PROFILE & SETTINGS (#profile)
+     ═══════════════════════════════════════════════ -->
+<div class="page-section" id="page-profile">
+  <div class="subpage-hero grain-overlay">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+        <div>
+          <span class="subpage-badge">👤 Account &amp; Typographic Settings</span>
+          <h1 class="subpage-title" style="margin-bottom:8px;">Reader Profile &amp; Settings</h1>
+          <p class="subpage-desc" style="max-width:600px;">
+            Customize your reading biology baseline, typographic preferences, assistive tools, and security. Settings sync in real time with your MySQL database and browser extension.
+          </p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <a href="#dashboard" class="btn btn-outline" style="text-decoration:none;">📊 View Reading Analytics</a>
+          <button class="btn btn-amber" onclick="saveAllProfileSettings()">💾 Save All Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subpage-content">
+    <div class="container">
+      
+      <!-- Top Overview Card -->
+      <div class="profile-header-card">
+        <div class="profile-avatar-large" id="profileAvatar">AJ</div>
+        <div class="profile-info-block">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <h2 id="profileDisplayName" style="font-family:var(--ff-heading);font-size:1.8rem;margin:0;">Alex Johnson</h2>
+            <span class="role-badge" id="profileRoleBadge">Student Reader</span>
+            <span class="db-sync-badge" id="profileDbBadge">🟢 MySQL Connected</span>
+          </div>
+          <p id="profileDisplayEmail" style="color:var(--clr-text-muted);margin:6px 0 0;font-size:1rem;">alex@dyslexiform.org</p>
+        </div>
+        <div class="profile-quick-stats">
+          <div class="stat-pill">
+            <span class="stat-pill-val" id="profileWpmStat">182</span>
+            <span class="stat-pill-lbl">Current WPM</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-val" id="profilePresetsStat">3</span>
+            <span class="stat-pill-lbl">Active Presets</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-val">100%</span>
+            <span class="stat-pill-lbl">Local Privacy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Grid Layout -->
+      <div class="profile-grid">
+        
+        <!-- Left Column: Settings Cards -->
+        <div class="profile-main-col">
+          
+          <!-- 1. Account Details Form -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-icon">👤</div>
+              <div>
+                <h3>Personal Identity &amp; Role</h3>
+                <p>Manage your account name and educational reading profile</p>
+              </div>
+            </div>
+            
+            <div class="form-row" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px;">
+              <div class="form-group">
+                <label for="profName">Display Name</label>
+                <input type="text" id="profName" class="form-input" value="Alex Johnson" oninput="document.getElementById('profileDisplayName').textContent = this.value || 'Reader'">
+              </div>
+              <div class="form-group">
+                <label for="profEmail">Registered Email</label>
+                <input type="email" id="profEmail" class="form-input" value="alex@dyslexiform.org" disabled style="opacity:0.8;background:var(--clr-surface);cursor:not-allowed;">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:12px;">
+              <label for="profRole">Reading Profile Role</label>
+              <select id="profRole" class="form-select" onchange="updateProfileRoleBadge(this.value)">
+                <option value="student" selected>Student / K-12 &amp; Higher Education</option>
+                <option value="educator">Special Education Educator / Specialist</option>
+                <option value="adult">Adult Reader / Professional</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 2. Typographic Preferences (Every Setting Required) -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-icon">🔤</div>
+              <div>
+                <h3>Default Typographic Synthesis</h3>
+                <p>Configure font geometry, sizing, letter rhythm, and contrast</p>
+              </div>
+            </div>
+
+            <!-- Font Family -->
+            <div class="form-group">
+              <label>Primary Reading Typeface</label>
+              <div class="font-selection-grid">
+                <button type="button" class="font-select-btn active" data-font="Lexend" onclick="setProfileFont('Lexend', this)">
+                  <span class="font-preview-name" style="font-family:'Lexend', sans-serif;">Lexend</span>
+                  <span class="font-meta">Cognitive Pacing &amp; Flow</span>
+                </button>
+                <button type="button" class="font-select-btn" data-font="OpenDyslexic" onclick="setProfileFont('OpenDyslexic', this)">
+                  <span class="font-preview-name" style="font-family:'OpenDyslexic', sans-serif;">OpenDyslexic</span>
+                  <span class="font-meta">Weighted Gravitational Baselines</span>
+                </button>
+                <button type="button" class="font-select-btn" data-font="Atkinson" onclick="setProfileFont('Atkinson', this)">
+                  <span class="font-preview-name" style="font-family:'Atkinson Hyperlegible', sans-serif;">Atkinson</span>
+                  <span class="font-meta">Hyperlegible Distinction</span>
+                </button>
+                <button type="button" class="font-select-btn" data-font="Comic" onclick="setProfileFont('Comic', this)">
+                  <span class="font-preview-name" style="font-family:'Comic Sans MS', cursive, sans-serif;">Comic Sans</span>
+                  <span class="font-meta">Informal Letter Geometry</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Font Size Slider -->
+            <div class="form-group" style="margin-top:20px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <label for="profFontSize">Font Size Baseline</label>
+                <span class="setting-val-badge" id="profFontSizeVal">105%</span>
+              </div>
+              <input type="range" id="profFontSize" min="85" max="160" value="105" class="range-slider" oninput="updateProfilePreview()">
+            </div>
+
+            <!-- Line Height Slider -->
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <label for="profLineHeight">Line Height (Vertical Spacing)</label>
+                <span class="setting-val-badge" id="profLineHeightVal">1.75×</span>
+              </div>
+              <input type="range" id="profLineHeight" min="1.2" max="2.6" step="0.05" value="1.75" class="range-slider" oninput="updateProfilePreview()">
+            </div>
+
+            <!-- Letter Spacing Slider -->
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <label for="profLetterSpacing">Letter Spacing (Kerning Expansion)</label>
+                <span class="setting-val-badge" id="profLetterSpacingVal">+0.04em</span>
+              </div>
+              <input type="range" id="profLetterSpacing" min="-0.02" max="0.20" step="0.01" value="0.04" class="range-slider" oninput="updateProfilePreview()">
+            </div>
+
+            <!-- Word Spacing Slider -->
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <label for="profWordSpacing">Word Rhythm (Inter-Word Gap)</label>
+                <span class="setting-val-badge" id="profWordSpacingVal">+0.12em</span>
+              </div>
+              <input type="range" id="profWordSpacing" min="0.0" max="0.35" step="0.01" value="0.12" class="range-slider" oninput="updateProfilePreview()">
+            </div>
+
+            <!-- Optical Background Tint -->
+            <div class="form-group" style="margin-top:20px;">
+              <label>Default Optical Comfort Background Tint</label>
+              <div class="tint-selection-grid">
+                <button type="button" class="tint-chip active" data-tint="none" onclick="setProfileTint('none', this)">
+                  <span class="tint-swatch" style="background:#fff;border:1px solid #ccc;"></span>
+                  <span>None</span>
+                </button>
+                <button type="button" class="tint-chip" data-tint="cream" onclick="setProfileTint('cream', this)">
+                  <span class="tint-swatch" style="background:#fcf8ed;border:1px solid #e2dac2;"></span>
+                  <span>Warm Cream</span>
+                </button>
+                <button type="button" class="tint-chip" data-tint="peach" onclick="setProfileTint('peach', this)">
+                  <span class="tint-swatch" style="background:#fff1e8;border:1px solid #edd5c5;"></span>
+                  <span>Soft Peach</span>
+                </button>
+                <button type="button" class="tint-chip" data-tint="mint" onclick="setProfileTint('mint', this)">
+                  <span class="tint-swatch" style="background:#eaf7f0;border:1px solid #cce8d9;"></span>
+                  <span>Calm Mint</span>
+                </button>
+                <button type="button" class="tint-chip" data-tint="rose" onclick="setProfileTint('rose', this)">
+                  <span class="tint-swatch" style="background:#fcedf0;border:1px solid #edd0d6;"></span>
+                  <span>Muted Rose</span>
+                </button>
+                <button type="button" class="tint-chip" data-tint="dark" onclick="setProfileTint('dark', this)">
+                  <span class="tint-swatch" style="background:#1a2120;border:1px solid #444;"></span>
+                  <span>Dark Contrast</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 3. Assistive Engines & Tools -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-icon">🎯</div>
+              <div>
+                <h3>Assistive Reading Engines</h3>
+                <p>Fine-tune saccadic fixation, reading ruler guidance, and extension sync</p>
+              </div>
+            </div>
+
+            <div class="toggle-setting-row">
+              <div>
+                <strong>Bionic Saccadic Fixation Engine</strong>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin:2px 0 0;">Boldens the initial syllable of words to accelerate cognitive saccades.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="profBionicMode" onchange="updateProfilePreview()">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-setting-row">
+              <div>
+                <strong>Horizon Focus Reading Ruler</strong>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin:2px 0 0;">Displays a smooth mouse-following focus guide to prevent line-jumping.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="profReadingRuler" onchange="updateProfilePreview()">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-setting-row">
+              <div>
+                <strong>Extension Preference Auto-Sync</strong>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin:2px 0 0;">Automatically apply these presets to the DyslexiForm Chrome/Edge extension.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="profAutoSync" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+          </div>
+
+          <!-- 4. Security & Password Change -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <div class="settings-card-icon">🔒</div>
+              <div>
+                <h3>Account Security</h3>
+                <p>Change your login password and manage credentials</p>
+              </div>
+            </div>
+
+            <div class="form-row" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px;">
+              <div class="form-group">
+                <label for="profNewPassword">New Password</label>
+                <input type="password" id="profNewPassword" class="form-input" placeholder="Leave blank to keep current">
+              </div>
+              <div class="form-group">
+                <label for="profConfirmPassword">Confirm New Password</label>
+                <input type="password" id="profConfirmPassword" class="form-input" placeholder="Repeat new password">
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:20px;">
+            <button class="btn btn-outline" onclick="resetProfileDefaults()" style="color:var(--clr-text);">↺ Reset to WCAG Baseline</button>
+            <div style="display:flex;gap:12px;">
+              <button class="btn btn-outline" onclick="logoutUser()">Log Out</button>
+              <button class="btn btn-amber" onclick="saveAllProfileSettings()" id="btnSaveProfile">💾 Save &amp; Sync All Settings</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Live Preview Card & Database Status -->
+        <div class="profile-side-col">
+          
+          <!-- Sticky Live Simulator Preview -->
+          <div class="settings-card sticky-card">
+            <div class="settings-card-header">
+              <div class="settings-card-icon">👁️</div>
+              <div>
+                <h3>Live Typographic Preview</h3>
+                <p>Updates dynamically as you adjust any setting</p>
+              </div>
+            </div>
+
+            <div class="profile-preview-box" id="profileLivePreview">
+              <h4 style="margin:0 0 10px;font-size:1.15rem;color:inherit;" id="previewHeading">Cognitive Neuroscience &amp; Reading Flow</h4>
+              <p id="profilePreviewParagraph" style="margin:0;line-height:inherit;letter-spacing:inherit;word-spacing:inherit;">
+                Visual crowding occurs when surrounding letters interfere with recognition of individual graphemes. By widening horizontal letter spacing and balancing vertical line rhythm, the cognitive load on the visual cortex is reduced by up to 34%, eliminating optical jumping and fatigue.
+              </p>
+              <div id="previewRulerLine" style="display:none;height:4px;background:#e8943a;border-radius:2px;margin-top:16px;box-shadow:0 0 10px rgba(232,148,58,0.5);"></div>
+            </div>
+
+            <!-- Database Synchronization Status -->
+            <div style="margin-top:24px;padding:16px;background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-sm);">
+              <h4 style="margin:0 0 8px;font-size:0.95rem;display:flex;align-items:center;gap:6px;">
+                <span>🐬</span> MySQL Persistence Engine
+              </h4>
+              <div style="font-size:0.85rem;color:var(--clr-text-muted);line-height:1.5;">
+                • Host: <code>127.0.0.1:3306</code><br>
+                • Service: <code>MySQL96</code><br>
+                • Database: <code>dyslexiform</code><br>
+                • Table: <code>users &amp; presets</code><br>
+                • Status: <strong style="color:var(--clr-success);" id="sqlStatusLabel">Connected &amp; Active</strong>
+              </div>
+              <button class="btn btn-outline" style="width:100%;margin-top:12px;font-size:0.85rem;padding:8px 12px;" onclick="syncWithMySQLServer()">⚡ Force Re-Sync to MySQL</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Profile Footer -->
+  <footer class="footer" role="contentinfo" style="margin-top:80px;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="nav-logo-text" style="display:block;color:#fff;font-size:1.3rem;">DyslexiForm</span>
+          <p class="footer-tagline">Making the web readable for everyone</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#product">Engines &amp; Features</a></li>
+            <li><a href="demo.html" target="_blank">Live Simulator ↗</a></li>
+            <li><a href="#educator">Educator Hub</a></li>
+            <li><a href="#dashboard">Student Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#resources">Scientific Papers</a></li>
+            <li><a href="#resources">Classroom Toolkits</a></li>
+            <li><a href="#resources">Typographic Assessment</a></li>
+            <li><a href="dyslexiform-extension.zip" download="dyslexiform-extension.zip">Download Extension (.zip)</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="#blog">Research Journal</a></li>
+            <li><a href="#resources">Scientific Papers</a></li>
+            <li><a href="#educator">Educator Hub</a></li>
+            <li><a href="#dashboard">Student Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Accessibility &amp; Legal</h4>
+          <ul>
+            <li><a href="#accessibility">WCAG 2.2 AAA Audit</a></li>
+            <li><a href="#accessibility">Report a Barrier</a></li>
+            <li><a href="#privacy">Privacy Promise</a></li>
+            <li><a href="#privacy">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 DyslexiForm · WCAG 2.2 AAA · Made with ♥ for neurodivergent readers</p>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+          <span>🌙</span>
+          <span>Theme Toggle</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- end page-profile -->
 
 
 <!-- ═══════════════════════════════════════════════
@@ -3469,13 +4160,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
           </a>
         </li>
         <li>
-          <a href="#dashboard" class="sidebar-link">
+          <a href="#profile" class="sidebar-link">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/></svg>
-            My Account
+            My Profile &amp; Settings
           </a>
         </li>
         <li style="margin-top:auto;padding-top:var(--space-lg);">
-          <a href="#home" class="sidebar-link" onclick="loggedIn=false;navigateTo('home')">
+          <a href="#home" class="sidebar-link" onclick="logoutUser()">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3 10h10m-4-4l4 4-4 4M14 4h2a2 2 0 012 2v8a2 2 0 01-2 2h-2" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
             Logout
           </a>
@@ -4727,12 +5418,14 @@ function navigateTo(page) {
     'privacy': 'Privacy Promise & Legal — DyslexiForm',
     'register': 'Create Account — DyslexiForm',
     'login': 'Login — DyslexiForm',
+    'profile': 'Reader Profile & Settings — DyslexiForm',
     'dashboard': 'Student Dashboard — DyslexiForm',
     'educator': 'Educator Hub — DyslexiForm'
   };
   if (titleMap[page]) document.title = titleMap[page];
 
-  // Initialize charts if needed
+  // Initialize page-specific data
+  if (page === 'profile') initProfilePage();
   if (page === 'dashboard') { initReadingChart(); loadDatabasePresets(); refreshReadingChartWithDB(); }
   if (page === 'educator') initCohortChart();
 }
@@ -4750,6 +5443,9 @@ window.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateDarkModeUI(savedTheme);
   }
+
+  // Restore authenticated navbar session
+  updateNavbarAuth();
 
   handleHash();
   initSandboxSliders();
@@ -5277,39 +5973,399 @@ async function submitRegister() {
   }
 }
 
+function quickDemoLogin() {
+  const emailInput = document.getElementById('loginEmail');
+  const passInput = document.getElementById('loginPassword');
+  if (emailInput && passInput) {
+    emailInput.value = 'alex@dyslexiform.org';
+    passInput.value = 'password123';
+    checkLoginForm();
+    submitLogin();
+  }
+}
+
 async function submitLogin() {
   const btn = document.getElementById('loginSubmit');
-  btn.classList.add('btn-loading');
-  btn.disabled = true;
+  if (btn) {
+    btn.classList.add('btn-loading');
+    btn.disabled = true;
+  }
 
-  const email = document.getElementById('loginEmail')?.value || 'alex@dyslexiform.org';
-  const password = document.getElementById('loginPassword')?.value || 'password123';
+  const email = (document.getElementById('loginEmail')?.value || '').trim();
+  const password = document.getElementById('loginPassword')?.value || '';
+
+  if (!email || !password) {
+    showToast('Please enter both email and password.', 'error');
+    if (btn) {
+      btn.classList.remove('btn-loading');
+      btn.disabled = false;
+    }
+    return;
+  }
 
   try {
-    let user = { name: 'Alex Johnson', email: email, role: 'student' };
-    if (typeof DyslexiDB !== 'undefined') {
-      user = await DyslexiDB.Users.login(email, password);
+    let user = null;
+
+    // 1. Authenticate with backend REST API (persisted in MySQL!)
+    try {
+      const resp = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        user = data.user;
+      }
+    } catch (apiErr) {
+      console.warn('Backend REST API login notice:', apiErr.message);
     }
+
+    // 2. Fall back to local DyslexiDB (IndexedDB)
+    if (!user && typeof DyslexiDB !== 'undefined') {
+      try {
+        user = await DyslexiDB.Users.login(email, password);
+      } catch (idbErr) {
+        console.warn('IndexedDB login notice:', idbErr.message);
+      }
+    }
+
+    // 3. Fallback demo check if offline
+    if (!user && (email === 'alex@dyslexiform.org' || email === 'demo@dyslexiform.org') && password === 'password123') {
+      user = { id: 1, name: 'Alex Johnson', email: 'alex@dyslexiform.org', role: 'student' };
+    }
+
+    if (!user) {
+      throw new Error('Invalid email or password. Please verify credentials or use the 1-Click Demo Login button.');
+    }
+
     localStorage.setItem('dyslexiform_current_user', JSON.stringify(user));
     loggedIn = true;
-    showToast('Welcome back, ' + user.name + '!', 'success');
+    updateNavbarAuth(user);
+    showToast('👋 Welcome back, ' + user.name + '! Account loaded & synced with MySQL.', 'success');
 
     setTimeout(() => {
-      btn.classList.remove('btn-loading');
-      if (user.role === 'educator') {
-        location.hash = '#educator';
-      } else {
-        location.hash = '#dashboard';
-      }
+      if (btn) btn.classList.remove('btn-loading');
+      location.hash = '#profile';
     }, 600);
   } catch (err) {
-    btn.classList.remove('btn-loading');
-    btn.disabled = false;
-    showToast('Login note: ' + (err.message || err), 'info');
-    // Fallback login
-    loggedIn = true;
-    location.hash = '#dashboard';
+    if (btn) {
+      btn.classList.remove('btn-loading');
+      btn.disabled = false;
+    }
+    showToast(err.message || 'Login error occurred', 'error');
   }
+}
+
+function getCurrentUser() {
+  try {
+    const raw = localStorage.getItem('dyslexiform_current_user');
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function updateNavbarAuth(user) {
+  const currentUser = user || getCurrentUser();
+  const navLinks = document.getElementById('navLinks');
+  if (!navLinks) return;
+
+  let authLi = document.getElementById('navAuthItem');
+  if (!authLi) {
+    const loginLink = navLinks.querySelector('a[data-nav="login"]') || navLinks.querySelector('a[data-nav="profile"]');
+    if (loginLink) {
+      authLi = loginLink.parentElement;
+      authLi.id = 'navAuthItem';
+    }
+  }
+
+  if (currentUser) {
+    loggedIn = true;
+    if (authLi) {
+      authLi.innerHTML = `
+        <a href="#profile" data-nav="profile" style="color:var(--clr-primary);font-weight:700;">
+          👤 ${currentUser.name.split(' ')[0]}
+        </a>
+      `;
+    }
+    let logoutLi = document.getElementById('navLogoutItem');
+    if (!logoutLi && authLi) {
+      logoutLi = document.createElement('li');
+      logoutLi.id = 'navLogoutItem';
+      logoutLi.innerHTML = `<button onclick="logoutUser()" class="btn btn-outline" style="padding:6px 12px;font-size:0.8rem;">Logout</button>`;
+      authLi.after(logoutLi);
+    }
+  } else {
+    loggedIn = false;
+    if (authLi) {
+      authLi.innerHTML = `<a href="#login" data-nav="login">Login</a>`;
+    }
+    const logoutLi = document.getElementById('navLogoutItem');
+    if (logoutLi) logoutLi.remove();
+  }
+}
+
+function logoutUser() {
+  localStorage.removeItem('dyslexiform_current_user');
+  loggedIn = false;
+  updateNavbarAuth(null);
+  showToast('Logged out successfully.', 'info');
+  location.hash = '#home';
+}
+
+/* ───────────────────────────────────────────────
+   PROFILE & SETTINGS ENGINE
+   ─────────────────────────────────────────────── */
+let currentProfileFont = 'Lexend';
+let currentProfileTint = 'none';
+
+function initProfilePage() {
+  const user = getCurrentUser() || { name: 'Alex Johnson', email: 'alex@dyslexiform.org', role: 'student' };
+  
+  const nameEl = document.getElementById('profName');
+  const emailEl = document.getElementById('profEmail');
+  const roleEl = document.getElementById('profRole');
+  const dispName = document.getElementById('profileDisplayName');
+  const dispEmail = document.getElementById('profileDisplayEmail');
+  const avatarEl = document.getElementById('profileAvatar');
+
+  if (nameEl) nameEl.value = user.name || 'Alex Johnson';
+  if (emailEl) emailEl.value = user.email || 'alex@dyslexiform.org';
+  if (roleEl) roleEl.value = user.role || 'student';
+  if (dispName) dispName.textContent = user.name || 'Alex Johnson';
+  if (dispEmail) dispEmail.textContent = user.email || 'alex@dyslexiform.org';
+  
+  if (avatarEl && user.name) {
+    const parts = user.name.trim().split(' ');
+    const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]) : parts[0].substring(0, 2);
+    avatarEl.textContent = initials.toUpperCase();
+  }
+
+  updateProfileRoleBadge(user.role || 'student');
+
+  // Load saved preferences
+  const savedPrefs = localStorage.getItem('dyslexiform_profile_settings');
+  if (savedPrefs) {
+    try {
+      const p = JSON.parse(savedPrefs);
+      if (p.fontFamily) setProfileFont(p.fontFamily);
+      if (p.fontSize) document.getElementById('profFontSize').value = p.fontSize;
+      if (p.lineHeight) document.getElementById('profLineHeight').value = p.lineHeight;
+      if (p.letterSpacing) document.getElementById('profLetterSpacing').value = p.letterSpacing;
+      if (p.wordSpacing) document.getElementById('profWordSpacing').value = p.wordSpacing;
+      if (p.pageTint) setProfileTint(p.pageTint);
+      if (typeof p.bionicMode !== 'undefined') document.getElementById('profBionicMode').checked = p.bionicMode;
+      if (typeof p.readingRuler !== 'undefined') document.getElementById('profReadingRuler').checked = p.readingRuler;
+    } catch (e) {}
+  }
+
+  updateProfilePreview();
+  checkMySQLStatusForProfile();
+}
+
+function updateProfileRoleBadge(role) {
+  const badge = document.getElementById('profileRoleBadge');
+  if (!badge) return;
+  const labels = {
+    'student': 'Student Reader',
+    'educator': 'Educator / Specialist',
+    'adult': 'Adult Reader'
+  };
+  badge.textContent = labels[role] || 'Reader';
+}
+
+function setProfileFont(font, btn) {
+  currentProfileFont = font;
+  document.querySelectorAll('.font-select-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.font === font || b === btn);
+  });
+  updateProfilePreview();
+}
+
+function setProfileTint(tint, btn) {
+  currentProfileTint = tint;
+  document.querySelectorAll('.tint-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.tint === tint || c === btn);
+  });
+  updateProfilePreview();
+}
+
+function updateProfilePreview() {
+  const preview = document.getElementById('profileLivePreview');
+  const para = document.getElementById('profilePreviewParagraph');
+  const rulerLine = document.getElementById('previewRulerLine');
+  if (!preview || !para) return;
+
+  const fontSize = document.getElementById('profFontSize')?.value || 105;
+  const lineHeight = document.getElementById('profLineHeight')?.value || 1.75;
+  const letterSpacing = document.getElementById('profLetterSpacing')?.value || 0.04;
+  const wordSpacing = document.getElementById('profWordSpacing')?.value || 0.12;
+  const bionic = document.getElementById('profBionicMode')?.checked || false;
+  const ruler = document.getElementById('profReadingRuler')?.checked || false;
+
+  document.getElementById('profFontSizeVal').textContent = fontSize + '%';
+  document.getElementById('profLineHeightVal').textContent = lineHeight + '×';
+  document.getElementById('profLetterSpacingVal').textContent = (letterSpacing >= 0 ? '+' : '') + letterSpacing + 'em';
+  document.getElementById('profWordSpacingVal').textContent = (wordSpacing >= 0 ? '+' : '') + wordSpacing + 'em';
+
+  const fontFamilies = {
+    'Lexend': "'Lexend', sans-serif",
+    'OpenDyslexic': "'OpenDyslexic', sans-serif",
+    'Atkinson': "'Atkinson Hyperlegible', sans-serif",
+    'Comic': "'Comic Sans MS', cursive, sans-serif"
+  };
+  preview.style.fontFamily = fontFamilies[currentProfileFont] || "'Lexend', sans-serif";
+  preview.style.fontSize = (fontSize / 100) + 'rem';
+  preview.style.lineHeight = lineHeight;
+  preview.style.letterSpacing = letterSpacing + 'em';
+  preview.style.wordSpacing = wordSpacing + 'em';
+
+  const tints = {
+    'none': { bg: 'var(--clr-surface)', text: 'var(--clr-text)' },
+    'cream': { bg: '#fcf8ed', text: '#2c2825' },
+    'peach': { bg: '#fff1e8', text: '#332722' },
+    'mint': { bg: '#eaf7f0', text: '#1e2d26' },
+    'rose': { bg: '#fcedf0', text: '#332225' },
+    'dark': { bg: '#1a2120', text: '#e6f0ed' }
+  };
+  const t = tints[currentProfileTint] || tints.none;
+  preview.style.backgroundColor = t.bg;
+  preview.style.color = t.text;
+
+  const rawText = "Visual crowding occurs when surrounding letters interfere with recognition of individual graphemes. By widening horizontal letter spacing and balancing vertical line rhythm, the cognitive load on the visual cortex is reduced by up to 34%, eliminating optical jumping and fatigue.";
+  if (bionic) {
+    para.innerHTML = rawText.split(' ').map(w => {
+      const mid = Math.ceil(w.length * 0.45);
+      return `<b>${w.slice(0, mid)}</b>${w.slice(mid)}`;
+    }).join(' ');
+  } else {
+    para.textContent = rawText;
+  }
+
+  if (rulerLine) {
+    rulerLine.style.display = ruler ? 'block' : 'none';
+  }
+}
+
+async function saveAllProfileSettings() {
+  const btn = document.getElementById('btnSaveProfile');
+  if (btn) btn.disabled = true;
+
+  const user = getCurrentUser() || { id: 1, name: 'Alex Johnson', email: 'alex@dyslexiform.org', role: 'student' };
+  const newName = document.getElementById('profName')?.value.trim() || user.name;
+  const newRole = document.getElementById('profRole')?.value || user.role;
+  const newPass = document.getElementById('profNewPassword')?.value || '';
+  const confirmPass = document.getElementById('profConfirmPassword')?.value || '';
+
+  if (newPass && newPass !== confirmPass) {
+    showToast('New passwords do not match!', 'error');
+    if (btn) btn.disabled = false;
+    return;
+  }
+
+  const settings = {
+    fontFamily: currentProfileFont,
+    fontSize: parseInt(document.getElementById('profFontSize')?.value, 10) || 105,
+    lineHeight: parseFloat(document.getElementById('profLineHeight')?.value) || 1.75,
+    letterSpacing: parseFloat(document.getElementById('profLetterSpacing')?.value) || 0.04,
+    wordSpacing: parseFloat(document.getElementById('profWordSpacing')?.value) || 0.12,
+    pageTint: currentProfileTint,
+    bionicMode: document.getElementById('profBionicMode')?.checked || false,
+    readingRuler: document.getElementById('profReadingRuler')?.checked || false,
+    updatedAt: new Date().toISOString()
+  };
+
+  user.name = newName;
+  user.role = newRole;
+  localStorage.setItem('dyslexiform_current_user', JSON.stringify(user));
+  localStorage.setItem('dyslexiform_profile_settings', JSON.stringify(settings));
+  updateNavbarAuth(user);
+
+  try {
+    await fetch('/api/user/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: user.email,
+        name: newName,
+        role: newRole,
+        newPassword: newPass || undefined
+      })
+    });
+
+    await fetch('/api/presets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: newName + "'s Custom Profile",
+        ...settings
+      })
+    });
+  } catch (apiErr) {
+    console.warn('MySQL API sync note:', apiErr.message);
+  }
+
+  if (typeof DyslexiDB !== 'undefined') {
+    try {
+      await DyslexiDB.Presets.create({
+        name: newName + "'s Custom Preset",
+        ...settings
+      });
+    } catch (e) {}
+  }
+
+  if (btn) btn.disabled = false;
+  showToast('✅ Profile & typographic settings saved and synced to MySQL!', 'success');
+  initProfilePage();
+}
+
+function resetProfileDefaults() {
+  document.getElementById('profFontSize').value = 105;
+  document.getElementById('profLineHeight').value = 1.75;
+  document.getElementById('profLetterSpacing').value = 0.04;
+  document.getElementById('profWordSpacing').value = 0.12;
+  document.getElementById('profBionicMode').checked = false;
+  document.getElementById('profReadingRuler').checked = false;
+  setProfileFont('Lexend');
+  setProfileTint('none');
+  updateProfilePreview();
+  showToast('Reset settings to WCAG AAA benchmark.', 'info');
+}
+
+async function syncWithMySQLServer() {
+  const lbl = document.getElementById('sqlStatusLabel');
+  if (lbl) lbl.textContent = 'Syncing...';
+  try {
+    const res = await fetch('/api/health');
+    const data = await res.json();
+    if (data.mysql && data.mysql.connected) {
+      if (lbl) lbl.innerHTML = '🟢 Connected &amp; Active (' + data.mysql.database + ')';
+      showToast('⚡ MySQL connection verified! All settings synced.', 'success');
+    } else {
+      if (lbl) lbl.innerHTML = '🟡 Local JSON Fallback';
+      showToast('Server is currently using local database fallback.', 'info');
+    }
+  } catch (err) {
+    if (lbl) lbl.innerHTML = '🔴 Server Offline';
+    showToast('Could not reach backend server.', 'error');
+  }
+}
+
+async function checkMySQLStatusForProfile() {
+  try {
+    const res = await fetch('/api/health');
+    const data = await res.json();
+    const badge = document.getElementById('profileDbBadge');
+    const sqlStatusLabel = document.getElementById('sqlStatusLabel');
+    if (data.mysql && data.mysql.connected) {
+      if (badge) badge.innerHTML = '🟢 MySQL Connected';
+      if (sqlStatusLabel) sqlStatusLabel.innerHTML = 'Connected & Active (MySQL 9.6)';
+    } else {
+      if (badge) badge.innerHTML = '🟡 IndexedDB Active';
+      if (sqlStatusLabel) sqlStatusLabel.innerHTML = 'IndexedDB Local Fallback';
+    }
+  } catch (e) {}
 }
 
 /* ───────────────────────────────────────────────

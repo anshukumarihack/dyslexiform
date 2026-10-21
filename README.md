@@ -89,6 +89,7 @@ dyslexiform/
 │   ├── #blog                     # Research journal with category filter & reader modal
 │   ├── #accessibility            # WCAG 2.2 AAA criteria compliance matrix
 │   ├── #privacy                  # Plain-English zero-telemetry guarantee
+│   ├── #profile                  # Reader Profile & complete typographic settings (MySQL synced)
 │   ├── #dashboard                # Student reading metrics & Chart.js velocity graphs
 │   └── #educator                 # School classroom cohort deployment portal
 │

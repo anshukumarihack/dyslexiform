@@ -60,6 +60,26 @@ async function createUser({ name, email, passwordHash, role = 'student' }) {
   return { id: result.insertId, name, email, role };
 }
 
+async function getUserById(id) {
+  if (!isConnected) return null;
+  const [rows] = await pool.execute('SELECT id, name, email, role, created_at as createdAt, last_login as lastLogin FROM users WHERE id = ? LIMIT 1', [id]);
+  return rows[0] || null;
+}
+
+async function updateUser(id, { name, role, passwordHash }) {
+  if (!isConnected) return null;
+  const updates = [];
+  const params = [];
+  if (name) { updates.push('name = ?'); params.push(name); }
+  if (role) { updates.push('role = ?'); params.push(role); }
+  if (passwordHash) { updates.push('password_hash = ?'); params.push(passwordHash); }
+  if (updates.length === 0) return null;
+  params.push(id);
+  await pool.execute(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params);
+  const [rows] = await pool.execute('SELECT id, name, email, role, created_at as createdAt, last_login as lastLogin FROM users WHERE id = ? LIMIT 1', [id]);
+  return rows[0] || null;
+}
+
 // Preset operations
 async function getPresets(userId = null) {
   if (!isConnected) return null;
@@ -172,6 +192,8 @@ module.exports = {
   getStatus,
   findUserByEmail,
   createUser,
+  getUserById,
+  updateUser,
   getPresets,
   createPreset,
   getReadingLogs,

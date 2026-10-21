@@ -262,6 +262,65 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    // GET /api/user/profile
+    if (pathname === '/api/user/profile' && req.method === 'GET') {
+      const email = parsedUrl.query.email || '';
+      let user = null;
+      if (mysqlDb.isConnected && email) {
+        try {
+          const sqlUser = await mysqlDb.findUserByEmail(email);
+          if (sqlUser) {
+            user = { id: sqlUser.id, name: sqlUser.name, email: sqlUser.email, role: sqlUser.role, createdAt: sqlUser.created_at, lastLogin: sqlUser.last_login };
+          }
+        } catch (e) {
+          console.error('[MySQL Error] findUserByEmail:', e.message);
+        }
+      }
+      if (!user) {
+        user = db.users.find(u => u.email === email) || db.users[0];
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ user }));
+      return;
+    }
+
+    // PUT /api/user/profile
+    if (pathname === '/api/user/profile' && req.method === 'PUT') {
+      const body = await parseBody(req);
+      const email = (body.email || '').toLowerCase().trim();
+      let updatedUser = null;
+
+      if (mysqlDb.isConnected) {
+        try {
+          const existing = await mysqlDb.findUserByEmail(email);
+          if (existing) {
+            const passwordHash = body.newPassword ? Buffer.from(body.newPassword).toString('base64') : null;
+            updatedUser = await mysqlDb.updateUser(existing.id, {
+              name: body.name,
+              role: body.role,
+              passwordHash: passwordHash
+            });
+          }
+        } catch (e) {
+          console.error('[MySQL Error] updateUser:', e.message);
+        }
+      }
+
+      // Also update local JSON
+      const uIdx = db.users.findIndex(u => u.email === email);
+      if (uIdx !== -1) {
+        if (body.name) db.users[uIdx].name = body.name;
+        if (body.role) db.users[uIdx].role = body.role;
+        if (body.newPassword) db.users[uIdx].passwordHash = Buffer.from(body.newPassword).toString('base64');
+        writeDB(db);
+        if (!updatedUser) updatedUser = db.users[uIdx];
+      }
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, user: updatedUser }));
+      return;
+    }
+
     // GET /api/presets
     if (pathname === '/api/presets' && req.method === 'GET') {
       let presets = null;

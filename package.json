@@ -18,5 +18,8 @@
   ],
   "author": "DyslexiForm Contributors",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "mysql2": "^3.24.6"
+  }
 }

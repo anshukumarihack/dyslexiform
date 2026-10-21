@@ -76,9 +76,12 @@ dyslexiform/
 │   ├── icons/                    # High-res icons (16, 32, 48, 128px)
 │   └── README.md                 # Extension setup instructions
 │
+├── schema.sql                    # Production MySQL schema & seed data (Workbench ready)
+├── mysql_db.js                   # MySQL connection pool connector (mysql2/promise)
+├── .env.example                  # Environment variables template for database credentials
 ├── db.js                         # Universal IndexedDB Database Engine (DyslexiDB)
 │                                 # Stores users, presets, reading logs, cohorts, contact msgs
-├── server.js                     # Node.js backend server with REST API & JSON database
+├── server.js                     # Node.js backend server with REST API & MySQL connector
 ├── package.json                  # Scripts & project metadata
 ├── index.html                    # Complete marketing & management platform
 │   ├── #product                  # Deep technical engine breakdowns + live mini-tuner
@@ -98,28 +101,40 @@ dyslexiform/
 
 ---
 
-## 🗄️ Database Architecture (DyslexiDB)
+## 🗄️ Database Architecture (MySQL + DyslexiDB)
 
-DyslexiForm features a **dual-layer database system** designed to work seamlessly both on static hosts (like GitHub Pages) and as a full-stack local server:
+DyslexiForm features an enterprise **hybrid database architecture** designed to work seamlessly both locally with **MySQL / MySQL Workbench** and on static hosts (like GitHub Pages):
 
-1. **Client-Side Universal Database (`db.js` / IndexedDB)**:
-   - High-capacity local relational store that requires zero backend installation.
-   - **Tables / Stores**:
-     - `users`: User registration, credential verification, roles (student/educator/reader).
-     - `presets`: Custom typographic presets (fonts, line height, letter/word spacing, bionic mode, ruler, color tints).
-     - `reading_logs`: Reading speed records (WPM, duration, dates) feeding Chart.js analytics.
-     - `cohorts`: Classroom student rosters and preset assignments.
-     - `contact_messages`: Inquiries sent through `#company`.
-     - `barrier_reports`: Accessibility barrier reports sent through `#accessibility`.
-   - **One-Click Backup & Restore**: Export all database records as a single `.json` file and restore on any device!
+### 1. MySQL Enterprise Database (`schema.sql` & `mysql_db.js`)
+- Full relational persistence powered by **MySQL Server** and **MySQL Workbench**.
+- **Connection**: `127.0.0.1:3306` (service `MySQL96`), Database `dyslexiform`.
+- **Relational Tables**:
+  - `users`: User registration, SHA/Base64 credentials, role-based access (`student`, `educator`, `adult`).
+  - `presets`: Custom typographic profiles (fonts, font size, line height, letter spacing, word spacing, bionic mode, reading ruler, optical tints).
+  - `reading_logs`: Historical reading velocity logs (WPM, duration minutes, article titles, timestamps) driving live analytics.
+  - `cohorts`: Classroom student rosters, active typography presets, and aggregate performance.
+  - `contact_messages`: Inquiries and educator pilot applications.
+  - `barrier_reports`: Accessibility barrier submissions with URLs and descriptions.
 
-2. **Backend Server & REST API (`server.js`)**:
-   - Zero-dependency Node.js native server providing file hosting, database persistence (`data/database.json`), and REST API endpoints:
-     - `POST /api/register` & `POST /api/login`
-     - `GET /api/presets` & `POST /api/presets`
-     - `GET /api/reading-logs` & `POST /api/reading-logs`
-     - `POST /api/contact` & `POST /api/barrier-report`
-     - `GET /api/backup` (Download JSON database backup)
+#### 🐬 Quick Setup in MySQL Workbench:
+1. Open **MySQL Workbench** and connect to your local instance (`root@127.0.0.1:3306`).
+2. Go to **File -> Open SQL Script...** and select [`schema.sql`](./schema.sql).
+3. Click the ⚡ **Execute** icon (or press `Ctrl+Shift+Enter`) to create the `dyslexiform` database, tables, foreign keys, and baseline seed records.
+4. Set your MySQL credentials in `.env` (copy from [`.env.example`](./.env.example)):
+   ```env
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=your_password
+   DB_NAME=dyslexiform
+   ```
+5. Run `npm start` — the server connects to MySQL with connection pooling (`mysql2/promise`).
+
+### 2. Universal Client-Side Store (`db.js` / IndexedDB) & JSON Fallback
+- For static GitHub Pages or offline use without MySQL running:
+  - IndexedDB (`DyslexiDB`) provides instant zero-installation browser storage.
+  - When running `server.js`, it automatically falls back to `data/database.json` if MySQL is temporarily offline.
+  - **One-Click Backup & Restore**: Export all records as a single `.json` file anytime at `GET /api/backup`!
 
 ---
 

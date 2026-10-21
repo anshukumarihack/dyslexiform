@@ -1,13 +1,15 @@
 /**
  * DyslexiForm Full-Stack Backend Server
- * Built with zero external dependencies (Node.js native http, fs, path).
- * Provides static file hosting and a persistent JSON database store at /data/database.json.
+ * Built with Node.js http, fs, and path.
+ * Supports MySQL Database (via mysql2/promise) and local JSON persistence (/data/database.json).
  */
 
+require('dotenv').config();
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const mysqlDb = require('./mysql_db');
 
 const PORT = process.env.PORT || 8080;
 const DATA_DIR = path.join(__dirname, 'data');
@@ -149,8 +151,14 @@ const server = http.createServer(async (req, res) => {
 
     // GET /api/health
     if (pathname === '/api/health') {
+      const mysqlStatus = mysqlDb.getStatus();
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ status: 'OK', database: 'connected', version: '2.1.4' }));
+      res.end(JSON.stringify({
+        status: 'OK',
+        version: '2.1.4',
+        database: mysqlStatus.connected ? 'mysql' : 'json_file',
+        mysql: mysqlStatus
+      }));
       return;
     }
 
@@ -164,17 +172,46 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      if (db.users.some((u) => u.email === email)) {
+      // Check existing user in MySQL if connected
+      let existingUser = null;
+      if (mysqlDb.isConnected) {
+        try {
+          existingUser = await mysqlDb.findUserByEmail(email);
+        } catch (e) {
+          console.error('[MySQL Error] findUserByEmail:', e.message);
+        }
+      }
+      if (!existingUser && db.users.some((u) => u.email === email)) {
+        existingUser = true;
+      }
+
+      if (existingUser) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Email already registered' }));
         return;
       }
 
-      const newUser = {
+      const passwordHash = Buffer.from(body.password).toString('base64');
+      let createdUser = null;
+
+      if (mysqlDb.isConnected) {
+        try {
+          createdUser = await mysqlDb.createUser({
+            name: body.name || 'Reader',
+            email: email,
+            passwordHash: passwordHash,
+            role: body.role || 'student'
+          });
+        } catch (e) {
+          console.error('[MySQL Error] createUser:', e.message);
+        }
+      }
+
+      const newUser = createdUser || {
         id: (db.users.length ? Math.max(...db.users.map((u) => u.id)) : 0) + 1,
         name: body.name || 'Reader',
         email: email,
-        passwordHash: Buffer.from(body.password).toString('base64'),
+        passwordHash: passwordHash,
         role: body.role || 'student',
         createdAt: new Date().toISOString()
       };
@@ -191,7 +228,28 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/api/login' && req.method === 'POST') {
       const body = await parseBody(req);
       const email = (body.email || '').toLowerCase().trim();
-      const user = db.users.find((u) => u.email === email);
+      let user = null;
+
+      if (mysqlDb.isConnected) {
+        try {
+          const sqlUser = await mysqlDb.findUserByEmail(email);
+          if (sqlUser) {
+            user = {
+              id: sqlUser.id,
+              name: sqlUser.name,
+              email: sqlUser.email,
+              role: sqlUser.role,
+              passwordHash: sqlUser.password_hash
+            };
+          }
+        } catch (e) {
+          console.error('[MySQL Error] findUserByEmail:', e.message);
+        }
+      }
+
+      if (!user) {
+        user = db.users.find((u) => u.email === email);
+      }
 
       if (!user || user.passwordHash !== Buffer.from(body.password || '').toString('base64')) {
         res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -206,16 +264,23 @@ const server = http.createServer(async (req, res) => {
 
     // GET /api/presets
     if (pathname === '/api/presets' && req.method === 'GET') {
+      let presets = null;
+      if (mysqlDb.isConnected) {
+        try {
+          presets = await mysqlDb.getPresets();
+        } catch (e) {
+          console.error('[MySQL Error] getPresets:', e.message);
+        }
+      }
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(db.presets));
+      res.end(JSON.stringify(presets || db.presets));
       return;
     }
 
     // POST /api/presets
     if (pathname === '/api/presets' && req.method === 'POST') {
       const body = await parseBody(req);
-      const newPreset = {
-        id: (db.presets.length ? Math.max(...db.presets.map((p) => p.id)) : 0) + 1,
+      const presetData = {
         name: body.name || 'My Preset',
         fontFamily: body.fontFamily || 'Lexend',
         fontSize: body.fontSize || 105,
@@ -228,6 +293,22 @@ const server = http.createServer(async (req, res) => {
         createdAt: new Date().toISOString()
       };
 
+      let newPreset = null;
+      if (mysqlDb.isConnected) {
+        try {
+          newPreset = await mysqlDb.createPreset(presetData);
+        } catch (e) {
+          console.error('[MySQL Error] createPreset:', e.message);
+        }
+      }
+
+      if (!newPreset) {
+        newPreset = {
+          id: (db.presets.length ? Math.max(...db.presets.map((p) => p.id)) : 0) + 1,
+          ...presetData
+        };
+      }
+
       db.presets.push(newPreset);
       writeDB(db);
 
@@ -238,21 +319,44 @@ const server = http.createServer(async (req, res) => {
 
     // GET /api/reading-logs
     if (pathname === '/api/reading-logs' && req.method === 'GET') {
+      let logs = null;
+      if (mysqlDb.isConnected) {
+        try {
+          logs = await mysqlDb.getReadingLogs();
+        } catch (e) {
+          console.error('[MySQL Error] getReadingLogs:', e.message);
+        }
+      }
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(db.reading_logs));
+      res.end(JSON.stringify(logs || db.reading_logs));
       return;
     }
 
     // POST /api/reading-logs
     if (pathname === '/api/reading-logs' && req.method === 'POST') {
       const body = await parseBody(req);
-      const newLog = {
-        id: (db.reading_logs.length ? Math.max(...db.reading_logs.map((l) => l.id)) : 0) + 1,
+      const logData = {
         wpm: parseInt(body.wpm, 10) || 160,
         durationMinutes: parseInt(body.durationMinutes, 10) || 15,
         articleTitle: body.articleTitle || 'Reading Session',
         date: new Date().toISOString()
       };
+
+      let newLog = null;
+      if (mysqlDb.isConnected) {
+        try {
+          newLog = await mysqlDb.createReadingLog(logData);
+        } catch (e) {
+          console.error('[MySQL Error] createReadingLog:', e.message);
+        }
+      }
+
+      if (!newLog) {
+        newLog = {
+          id: (db.reading_logs.length ? Math.max(...db.reading_logs.map((l) => l.id)) : 0) + 1,
+          ...logData
+        };
+      }
 
       db.reading_logs.push(newLog);
       writeDB(db);
@@ -262,19 +366,44 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    // GET /api/cohorts
+    if (pathname === '/api/cohorts' && req.method === 'GET') {
+      let cohorts = null;
+      if (mysqlDb.isConnected) {
+        try {
+          cohorts = await mysqlDb.getCohorts();
+        } catch (e) {
+          console.error('[MySQL Error] getCohorts:', e.message);
+        }
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(cohorts || db.cohorts));
+      return;
+    }
+
     // POST /api/contact
     if (pathname === '/api/contact' && req.method === 'POST') {
       const body = await parseBody(req);
       const msg = {
-        id: Date.now(),
         name: body.name,
         email: body.email,
         subject: body.subject,
         message: body.message,
         createdAt: new Date().toISOString()
       };
+
+      if (mysqlDb.isConnected) {
+        try {
+          await mysqlDb.createContactMessage(msg);
+        } catch (e) {
+          console.error('[MySQL Error] createContactMessage:', e.message);
+        }
+      }
+
+      msg.id = Date.now();
       db.contact_messages.push(msg);
       writeDB(db);
+
       res.writeHead(201, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ success: true, message: 'Received inquiry' }));
       return;
@@ -284,14 +413,24 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/api/barrier-report' && req.method === 'POST') {
       const body = await parseBody(req);
       const report = {
-        id: Date.now(),
         url: body.url,
         description: body.description,
-        email: body.email,
+        email: body.email || 'Anonymous',
         createdAt: new Date().toISOString()
       };
+
+      if (mysqlDb.isConnected) {
+        try {
+          await mysqlDb.createBarrierReport(report);
+        } catch (e) {
+          console.error('[MySQL Error] createBarrierReport:', e.message);
+        }
+      }
+
+      report.id = Date.now();
       db.barrier_reports.push(report);
       writeDB(db);
+
       res.writeHead(201, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ success: true, message: 'Logged barrier report' }));
       return;
@@ -333,12 +472,18 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`\n======================================================`);
-  console.log(`  DyslexiForm Server & Database running on port ${PORT}`);
-  console.log(`  • Platform:   http://localhost:${PORT}/index.html`);
-  console.log(`  • Simulator:  http://localhost:${PORT}/demo.html`);
-  console.log(`  • REST API:   http://localhost:${PORT}/api/health`);
-  console.log(`  • Database:   ${DB_FILE}`);
-  console.log(`======================================================\n`);
-});
+async function startServer() {
+  await mysqlDb.initMySQL();
+
+  server.listen(PORT, () => {
+    console.log(`\n======================================================`);
+    console.log(`  DyslexiForm Server & Database running on port ${PORT}`);
+    console.log(`  • Platform:   http://localhost:${PORT}/index.html`);
+    console.log(`  • Simulator:  http://localhost:${PORT}/demo.html`);
+    console.log(`  • REST API:   http://localhost:${PORT}/api/health`);
+    console.log(`  • Storage:    ${mysqlDb.isConnected ? 'MySQL (Active)' : 'Local JSON Fallback'}`);
+    console.log(`======================================================\n`);
+  });
+}
+
+startServer();
